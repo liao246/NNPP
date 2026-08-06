@@ -42,7 +42,25 @@ def load_real_mnist():
     X_train, y_train, X_test, y_test : np.ndarray
         X_* shape (N, 28, 28) dtype uint8, y_* shape (N,) dtype int, values 0..9.
     """
-    raise NotImplementedError("TODO: load real MNIST (Lab 1, step 1)")
+
+    from torchvision.datasets import MNIST
+
+    train_ds = MNIST(root="./mnist_data", train=True, download=True)
+    test_ds = MNIST(root="./mnist_data", train=False, download=True)
+
+    print(type(train_ds.data))
+    print(type(train_ds.targets))
+
+    X_train = train_ds.data.numpy()
+    y_train = train_ds.targets.numpy()
+    X_test = test_ds.data.numpy()
+    y_test = test_ds.targets.numpy()
+
+    print(X_train.shape, X_train.dtype, X_train.min(), X_train.max())
+    print(y_train.shape, y_train.dtype, y_train.min(), y_train.max())
+
+
+    return X_train, y_train, X_test, y_test
 
 
 def pool_2x2(images_28x28):
