@@ -22,6 +22,23 @@ import numpy as np
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 
 
+def _read_hex_lines(path):
+    with open(path) as f:
+        return [int(line.strip(), 16) for line in f if line.strip()]
+
+
+def _read_hex_i8(path):
+    """Inverse of train_quantize.py's _to_hex_u8 -- two's-complement decode."""
+    vals = [(v - 256) if v >= 128 else v for v in _read_hex_lines(path)]
+    return np.array(vals, dtype=np.int8)
+
+
+def _read_hex_i32(path):
+    """Inverse of train_quantize.py's _to_hex_u32 -- two's-complement decode."""
+    vals = [(v - (1 << 32)) if v >= (1 << 31) else v for v in _read_hex_lines(path)]
+    return np.array(vals, dtype=np.int32)
+
+
 def load_quantized_params(data_dir=DATA_DIR):
     """
     Read w1.mem, b1.mem, w2.mem, b2.mem, meta.json (written by
@@ -38,7 +55,20 @@ def load_quantized_params(data_dir=DATA_DIR):
     bias_q_fc2 : np.ndarray, shape (10,), dtype int32
     shift1 : int
     """
-    raise NotImplementedError("TODO: parse .mem files + meta.json")
+    with open(data_dir / "meta.json") as f:
+        meta = json.load(f)
+
+    n_input = meta["N_INPUT"]
+    hidden = meta["HIDDEN"]
+    n_class = meta["N_CLASS"]
+    shift1 = meta["SHIFT1"]
+
+    W1_q = _read_hex_i8(data_dir / "w1.mem").reshape(hidden, n_input)
+    bias_q_fc1 = _read_hex_i32(data_dir / "b1.mem")
+    W2_q = _read_hex_i8(data_dir / "w2.mem").reshape(n_class, hidden)
+    bias_q_fc2 = _read_hex_i32(data_dir / "b2.mem")
+
+    return W1_q, bias_q_fc1, W2_q, bias_q_fc2, shift1
 
 
 def fc1_forward_int(x_pixels_u8, W1_q, bias_q_fc1, shift1):
@@ -63,7 +93,18 @@ def fc1_forward_int(x_pixels_u8, W1_q, bias_q_fc1, shift1):
     acc1 : np.ndarray, shape (64,), dtype int32   (step 1 output, pre-shift -- needed for RTL comparison)
     a1 : np.ndarray, shape (64,), dtype int8       (step 5 output, final FC1 activations)
     """
-    raise NotImplementedError("TODO: implement the 5-step FC1 pipeline")
+    x_wide = x_pixels_u8.astype(np.int64)
+    W1_wide = W1_q.astype(np.int64)
+    bias1_wide = bias_q_fc1.astype(np.int64)
+
+    acc1 = W1_wide @ x_wide + bias1_wide             # step 1
+
+    acc1_round = acc1 + (1 << (shift1 - 1))          # step 2
+    acc1_shift = acc1_round >> shift1                # step 3
+    acc1_clamp = np.clip(acc1_shift, -128, 127)       # step 4
+    a1 = np.where(acc1_clamp < 0, 0, acc1_clamp)      # step 5
+
+    return acc1.astype(np.int32), a1.astype(np.int8)
 
 
 def fc2_forward_int(a1_i8, W2_q, bias_q_fc2):
@@ -81,7 +122,13 @@ def fc2_forward_int(a1_i8, W2_q, bias_q_fc2):
     -------
     acc2 : np.ndarray, shape (10,), dtype int32
     """
-    raise NotImplementedError("TODO: implement FC2 raw accumulation")
+    a1_wide = a1_i8.astype(np.int64)
+    W2_wide = W2_q.astype(np.int64)
+    bias2_wide = bias_q_fc2.astype(np.int64)
+
+    acc2 = W2_wide @ a1_wide + bias2_wide
+
+    return acc2.astype(np.int32)
 
 
 def predict(x_pixels_u8, W1_q, bias_q_fc1, W2_q, bias_q_fc2, shift1):
@@ -100,7 +147,11 @@ def predict(x_pixels_u8, W1_q, bias_q_fc1, W2_q, bias_q_fc2, shift1):
         or acc2 are wrong is exactly the kind of bug bit-exact comparison
         exists to catch.
     """
-    raise NotImplementedError("TODO: full forward pass + argmax")
+    acc1, a1 = fc1_forward_int(x_pixels_u8, W1_q, bias_q_fc1, shift1)
+    acc2 = fc2_forward_int(a1, W2_q, bias_q_fc2)
+    pred = int(np.argmax(acc2))  # ties -> smallest index, same convention as train_quantize.py
+
+    return {"acc1": acc1, "a1": a1, "acc2": acc2, "pred": pred}
 
 
 def dump_reference_vectors(data_dir=DATA_DIR):
@@ -113,17 +164,46 @@ def dump_reference_vectors(data_dir=DATA_DIR):
     This is what makes Lab 4's testbench comparison bit-exact rather than
     "final digit only" -- the exact gap in the old version of this project.
     """
-    raise NotImplementedError("TODO: dump per-image reference vectors for Lab 4")
+    with open(data_dir / "meta.json") as f:
+        meta = json.load(f)
+    n_input = meta["N_INPUT"]
+    ntest = meta["NTEST_STORED"]
+
+    W1_q, bias_q_fc1, W2_q, bias_q_fc2, shift1 = load_quantized_params(data_dir)
+
+    # Pixels are UNSIGNED (0..255) -- unlike weights, no two's-complement
+    # correction here, or values 128..255 would wrongly come out negative.
+    X = np.array(_read_hex_lines(data_dir / "x_test.mem"), dtype=np.uint8)
+    X = X.reshape(ntest, n_input)
+
+    with open(data_dir / "y_label.txt") as f:
+        labels = [int(line.strip()) for line in f if line.strip()]
+
+    correct = 0
+    for img in range(ntest):
+        result = predict(X[img], W1_q, bias_q_fc1, W2_q, bias_q_fc2, shift1)
+
+        # Format must match tb_digit_top.sv's load_reference_vectors() task
+        # EXACTLY: acc1[0..63], then a1[0..63], then acc2[0..9], then pred --
+        # one plain decimal integer per line, no blank lines.
+        with open(data_dir / f"ref_img{img}.txt", "w") as f:
+            for v in result["acc1"]:
+                f.write(f"{int(v)}\n")
+            for v in result["a1"]:
+                f.write(f"{int(v)}\n")
+            for v in result["acc2"]:
+                f.write(f"{int(v)}\n")
+            f.write(f"{result['pred']}\n")
+
+        if result["pred"] == labels[img]:
+            correct += 1
+
+    print(f"Wrote {ntest} reference files to {data_dir}/")
+    print(f"Accuracy over the 20 stored images: {correct}/{ntest} ({100 * correct / ntest:.1f}%)")
 
 
 def main():
-    W1_q, bias_q_fc1, W2_q, bias_q_fc2, shift1 = load_quantized_params()
     dump_reference_vectors()
-    # TODO: also print a quick summary (accuracy over the 20 stored images vs
-    # their true labels) as a fast sanity check that this file's independent
-    # re-implementation agrees with train_quantize.py's own validation number
-    # from Lab 1 step 6 -- two different code paths computing the same
-    # quantized accuracy is itself a useful cross-check.
 
 
 if __name__ == "__main__":
