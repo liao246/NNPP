@@ -1,0 +1,9 @@
+{
+  "N_INPUT": 196,
+  "HIDDEN": 64,
+  "N_CLASS": 10,
+  "NTEST_STORED": 20,
+  "SHIFT1": 11,
+  "float_test_accuracy": 0.9690999984741211,
+  "quantized_test_accuracy": 0.9683
+}

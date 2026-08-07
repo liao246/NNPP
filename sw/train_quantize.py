@@ -21,6 +21,8 @@ import json
 import os
 
 import numpy as np
+import torch
+import torch.nn as nn
 
 OUTDIR = "data"
 
@@ -48,17 +50,10 @@ def load_real_mnist():
     train_ds = MNIST(root="./mnist_data", train=True, download=True)
     test_ds = MNIST(root="./mnist_data", train=False, download=True)
 
-    print(type(train_ds.data))
-    print(type(train_ds.targets))
-
     X_train = train_ds.data.numpy()
     y_train = train_ds.targets.numpy()
     X_test = test_ds.data.numpy()
     y_test = test_ds.targets.numpy()
-
-    print(X_train.shape, X_train.dtype, X_train.min(), X_train.max())
-    print(y_train.shape, y_train.dtype, y_train.min(), y_train.max())
-
 
     return X_train, y_train, X_test, y_test
 
@@ -78,7 +73,45 @@ def pool_2x2(images_28x28):
     -------
     np.ndarray, shape (N, 14, 14), same dtype/range as input
     """
-    raise NotImplementedError("TODO: 2x2 average pool (Lab 1, step 2)")
+    # Promote to a wider dtype before summing -- 4 uint8 pixels can sum to
+    # up to 1020, which overflows uint8 (max 255) and would silently wrap.
+    x = images_28x28.astype(np.float32)
+
+    n = x.shape[0]
+    # Reshape (N, 28, 28) -> (N, 14, 2, 14, 2): splits each 28-length axis
+    # into (14 blocks, 2 pixels-per-block), in order, so block b's two
+    # pixels are original indices 2b and 2b+1 -- exactly the non-overlapping
+    # 2x2 grouping described in docs/lab3... err, lab1_quantization.md.
+    x = x.reshape(n, 14, 2, 14, 2)
+
+    # Average over the two "within-block" axes (2 and 4), collapsing each
+    # 2x2 block to its single averaged value. Result shape: (N, 14, 14).
+    pooled = x.mean(axis=(2, 4))
+
+    # Round to nearest int (not truncate), then cast back down to uint8 now
+    # that the value is safely back in the 0..255 range.
+    pooled = np.round(pooled).astype(np.uint8)
+
+    return pooled
+
+
+class _MLP(nn.Module):
+    """196 -> 64 (ReLU) -> 10, matching docs/architecture_spec.md Section 1.
+
+    nn.Linear(in_features, out_features) stores its weight as shape
+    (out_features, in_features) -- which already matches the project's
+    z = W @ x + b convention (W shaped (num_neurons, num_inputs)) with no
+    transpose needed when we pull the weights out later.
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.fc1 = nn.Linear(N_INPUT, HIDDEN)
+        self.relu = nn.ReLU()
+        self.fc2 = nn.Linear(HIDDEN, N_CLASS)
+
+    def forward(self, x):
+        return self.fc2(self.relu(self.fc1(x)))
 
 
 def train_float_model(X_train_pooled, y_train, X_test_pooled, y_test):
@@ -96,7 +129,54 @@ def train_float_model(X_train_pooled, y_train, X_test_pooled, y_test):
         z = W @ x + b convention from docs/lab0_nn_fundamentals.md)
     float_test_accuracy : float
     """
-    raise NotImplementedError("TODO: train the float MLP (Lab 1, step 3)")
+    torch.manual_seed(0)
+
+    # Flatten (N, 14, 14) -> (N, 196) and use RAW 0..255 float values --
+    # deliberately NOT normalized to 0..1. See the explanation above this
+    # function's call site: the quantization scheme fixes x_scale_input = 1,
+    # so the float model must already be trained at the same input scale
+    # the quantized/RTL model will see at inference, or the bias terms end
+    # up calibrated to the wrong scale.
+    X_train_t = torch.tensor(X_train_pooled.reshape(-1, N_INPUT), dtype=torch.float32)
+    y_train_t = torch.tensor(y_train, dtype=torch.long)
+    X_test_t = torch.tensor(X_test_pooled.reshape(-1, N_INPUT), dtype=torch.float32)
+    y_test_t = torch.tensor(y_test, dtype=torch.long)
+
+    model = _MLP()
+    optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+    loss_fn = nn.CrossEntropyLoss()  # expects raw logits + integer class labels
+
+    n_epochs = 15
+    batch_size = 128
+    n_samples = X_train_t.shape[0]
+
+    test_acc = 0.0
+    for epoch in range(n_epochs):
+        perm = torch.randperm(n_samples)
+        total_loss = 0.0
+        for i in range(0, n_samples, batch_size):
+            idx = perm[i:i + batch_size]
+            xb, yb = X_train_t[idx], y_train_t[idx]
+
+            optimizer.zero_grad()
+            logits = model(xb)
+            loss = loss_fn(logits, yb)
+            loss.backward()
+            optimizer.step()
+            total_loss += loss.item() * xb.shape[0]
+
+        train_loss = total_loss / n_samples
+        with torch.no_grad():
+            test_pred = model(X_test_t).argmax(dim=1)
+            test_acc = (test_pred == y_test_t).float().mean().item()
+        print(f"epoch {epoch + 1}/{n_epochs}  train_loss={train_loss:.4f}  test_acc={test_acc * 100:.2f}%")
+
+    W1_fp32 = model.fc1.weight.detach().numpy()  # (64, 196)
+    b1_fp32 = model.fc1.bias.detach().numpy()    # (64,)
+    W2_fp32 = model.fc2.weight.detach().numpy()  # (10, 64)
+    b2_fp32 = model.fc2.bias.detach().numpy()    # (10,)
+
+    return W1_fp32, b1_fp32, W2_fp32, b2_fp32, test_acc
 
 
 def quantize_weights(W_fp32):
@@ -111,7 +191,9 @@ def quantize_weights(W_fp32):
     W_q : np.ndarray, dtype int8, same shape as W_fp32
     w_scale : float
     """
-    raise NotImplementedError("TODO: symmetric int8 weight quantization (Lab 1, step 4)")
+    w_scale = 127.0 / np.max(np.abs(W_fp32))
+    w_q = np.clip(np.round(W_fp32 * w_scale), -127, 127).astype(np.int8)
+    return w_q, w_scale
 
 
 def quantize_bias_fc1(b1_fp32, w_scale_fc1):
@@ -123,7 +205,7 @@ def quantize_bias_fc1(b1_fp32, w_scale_fc1):
     -------
     np.ndarray, dtype int32
     """
-    raise NotImplementedError("TODO: quantize FC1 bias (Lab 1, step 4)")
+    return np.round(b1_fp32 * w_scale_fc1).astype(np.int32)
 
 
 def quantize_bias_fc2(b2_fp32, w_scale_fc1, w_scale_fc2, shift1):
@@ -137,7 +219,8 @@ def quantize_bias_fc2(b2_fp32, w_scale_fc1, w_scale_fc2, shift1):
     -------
     np.ndarray, dtype int32
     """
-    raise NotImplementedError("TODO: quantize FC2 bias (Lab 1, step 4)")
+    x_scale_hidden = w_scale_fc1 / (2 ** shift1)
+    return np.round(b2_fp32 * w_scale_fc2 * x_scale_hidden).astype(np.int32)
 
 
 def calibrate_shift1(W1_q, bias_q_fc1, X_calibration_images):
@@ -159,7 +242,23 @@ def calibrate_shift1(W1_q, bias_q_fc1, X_calibration_images):
     -------
     int
     """
-    raise NotImplementedError("TODO: calibrate SHIFT1 from real data (Lab 1, step 5)")
+    # Wide dtype before the matmul -- multiplying two int8 arrays directly
+    # can silently overflow, same overflow risk as pool_2x2's uint8 sum.
+    W1_wide = W1_q.astype(np.int64)                  # (64, 196)
+    X_wide = X_calibration_images.astype(np.int64)   # (M, 196)
+    bias_wide = bias_q_fc1.astype(np.int64)          # (64,)
+
+    # acc1[m, n] = sum_i(W1_q[n, i] * X[m, i]) + bias_q_fc1[n], for every
+    # calibration image m and every neuron n, computed all at once:
+    # (M, 196) @ (196, 64) -> (M, 64), then the bias broadcasts over the
+    # neuron axis. This is the RAW accumulator -- no shift/clamp/ReLU yet.
+    acc1 = X_wide @ W1_wide.T + bias_wide             # (M, 64)
+
+    p999 = np.percentile(np.abs(acc1), 99.9)
+    shift1 = int(np.ceil(np.log2(p999 / 127)))
+    shift1 = max(shift1, 0)  # a zero/negative shift would be degenerate -- guard against a bad calibration set
+
+    return shift1
 
 
 def quantized_inference_one(x_pixels_u8, W1_q, bias_q_fc1, W2_q, bias_q_fc2, shift1):
@@ -181,7 +280,30 @@ def quantized_inference_one(x_pixels_u8, W1_q, bias_q_fc1, W2_q, bias_q_fc2, shi
     -------
     pred : int, the argmax digit prediction (0-9)
     """
-    raise NotImplementedError("TODO: integer-only forward pass (Lab 1, step 6)")
+    # Widen dtypes before any arithmetic -- same overflow reasoning as
+    # calibrate_shift1 and pool_2x2.
+    x_wide = x_pixels_u8.astype(np.int64)          # (196,)
+    W1_wide = W1_q.astype(np.int64)                 # (64, 196)
+    bias1_wide = bias_q_fc1.astype(np.int64)        # (64,)
+
+    # ---- FC1: the exact 5 steps, for all 64 neurons at once ----
+    acc1 = W1_wide @ x_wide + bias1_wide             # step 1, (64,), int32-range values held in int64
+
+    acc1_round = acc1 + (1 << (shift1 - 1))          # step 2: round-half-up prep
+    acc1_shift = acc1_round >> shift1                # step 3: arithmetic shift (numpy's >> on signed ints), NOT real division
+    acc1_clamp = np.clip(acc1_shift, -128, 127)       # step 4: saturate to int8 range
+    a1 = np.where(acc1_clamp < 0, 0, acc1_clamp)      # step 5: ReLU
+    a1_i8 = a1.astype(np.int8)                        # (64,) -- FC1's final output
+
+    # ---- FC2: raw accumulate, NO requantization, straight to argmax ----
+    W2_wide = W2_q.astype(np.int64)                  # (10, 64)
+    bias2_wide = bias_q_fc2.astype(np.int64)          # (10,)
+    a1_wide = a1_i8.astype(np.int64)
+
+    acc2 = W2_wide @ a1_wide + bias2_wide              # (10,)
+
+    pred = int(np.argmax(acc2))  # ties -> smallest index, matching Python's max() convention
+    return pred
 
 
 def validate_quantized_accuracy(X_test_pooled, y_test, W1_q, bias_q_fc1, W2_q, bias_q_fc2, shift1):
@@ -194,7 +316,38 @@ def validate_quantized_accuracy(X_test_pooled, y_test, W1_q, bias_q_fc1, W2_q, b
     -------
     float
     """
-    raise NotImplementedError("TODO: validate quantized accuracy (Lab 1, step 6)")
+    X_flat = X_test_pooled.reshape(-1, N_INPUT)
+    n = X_flat.shape[0]
+
+    correct = 0
+    for i in range(n):
+        pred = quantized_inference_one(X_flat[i], W1_q, bias_q_fc1, W2_q, bias_q_fc2, shift1)
+        if pred == y_test[i]:
+            correct += 1
+
+    return correct / n
+
+
+def _to_hex_u8(v):
+    """Two's-complement hex byte, e.g. -1 -> 'ff', 127 -> '7f'."""
+    return f"{(int(v) & 0xFF):02x}"
+
+
+def _to_hex_u32(v):
+    """Two's-complement 8-hex-digit word, e.g. -1 -> 'ffffffff'."""
+    return f"{(int(v) & 0xFFFFFFFF):08x}"
+
+
+def _write_mem_u8(path, arr):
+    with open(path, "w") as f:
+        for v in arr.flatten():
+            f.write(_to_hex_u8(v) + "\n")
+
+
+def _write_mem_u32(path, arr):
+    with open(path, "w") as f:
+        for v in arr.flatten():
+            f.write(_to_hex_u32(v) + "\n")
 
 
 def export_mem_files(W1_q, bias_q_fc1, W2_q, bias_q_fc2, shift1,
@@ -213,7 +366,39 @@ def export_mem_files(W1_q, bias_q_fc1, W2_q, bias_q_fc2, shift1,
 
     No return value; writes files.
     """
-    raise NotImplementedError("TODO: export .mem files + meta.json (Lab 1, step 7)")
+    _write_mem_u8(os.path.join(OUTDIR, "w1.mem"), W1_q)
+    _write_mem_u32(os.path.join(OUTDIR, "b1.mem"), bias_q_fc1)
+    _write_mem_u8(os.path.join(OUTDIR, "w2.mem"), W2_q)
+    _write_mem_u32(os.path.join(OUTDIR, "b2.mem"), bias_q_fc2)
+
+    # Pick 2 test images per digit class (0-9) = 20 total -- deterministic
+    # (first 2 occurrences of each label), not an arbitrary first-20 slice.
+    X_flat = X_test_pooled_u8.reshape(-1, N_INPUT)
+    selected_idx = []
+    for digit in range(N_CLASS):
+        idx_for_digit = np.where(y_test == digit)[0][:2]
+        selected_idx.extend(idx_for_digit.tolist())
+
+    X_selected = X_flat[selected_idx]  # (20, 196)
+    y_selected = y_test[selected_idx]  # (20,)
+
+    _write_mem_u8(os.path.join(OUTDIR, "x_test.mem"), X_selected)
+
+    with open(os.path.join(OUTDIR, "y_label.txt"), "w") as f:
+        for v in y_selected:
+            f.write(str(int(v)) + "\n")
+
+    meta = {
+        "N_INPUT": N_INPUT,
+        "HIDDEN": HIDDEN,
+        "N_CLASS": N_CLASS,
+        "NTEST_STORED": NTEST_STORED,
+        "SHIFT1": shift1,
+        "float_test_accuracy": float_acc,
+        "quantized_test_accuracy": quant_acc,
+    }
+    with open(os.path.join(OUTDIR, "meta.json"), "w") as f:
+        json.dump(meta, f, indent=2)
 
 
 def main():
@@ -224,7 +409,30 @@ def main():
     # Print both float_acc and quant_acc clearly at the end -- you'll want these
     # numbers for your README (Lab 7) and for sanity-checking against Lab 4's
     # RTL simulation results.
-    raise NotImplementedError("TODO: wire together the full pipeline (Lab 1)")
+    X_train, y_train, X_test, y_test = load_real_mnist()
+    X_train_p = pool_2x2(X_train)
+    X_test_p = pool_2x2(X_test)
+
+    W1, b1, W2, b2, float_acc = train_float_model(X_train_p, y_train, X_test_p, y_test)
+
+    W1_q, w_scale_fc1 = quantize_weights(W1)
+    W2_q, w_scale_fc2 = quantize_weights(W2)
+    b1_q = quantize_bias_fc1(b1, w_scale_fc1)
+
+    calib_idx = np.random.choice(X_train_p.shape[0], size=1000, replace=False)
+    X_calib = X_train_p.reshape(-1, N_INPUT)[calib_idx]
+    shift1 = calibrate_shift1(W1_q, b1_q, X_calib)
+
+    b2_q = quantize_bias_fc2(b2, w_scale_fc1, w_scale_fc2, shift1)
+
+    quant_acc = validate_quantized_accuracy(X_test_p, y_test, W1_q, b1_q, W2_q, b2_q, shift1)
+
+    print(f"Float test accuracy:      {float_acc * 100:.2f}%")
+    print(f"Quantized test accuracy:  {quant_acc * 100:.2f}%")
+    print(f"Calibrated SHIFT1:        {shift1}")
+
+    export_mem_files(W1_q, b1_q, W2_q, b2_q, shift1, X_test_p, y_test, float_acc, quant_acc)
+    print(f"Exported .mem files + meta.json to {OUTDIR}/")
 
 
 if __name__ == "__main__":
