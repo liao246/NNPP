@@ -39,6 +39,23 @@ module mac_lane #(
     // later, not the same cycle -- fc_layer's FSM must be built assuming
     // that latency (see lab3.md).
 
+    logic signed [7:0] weight_mem [0:LOCAL_MEM_DEPTH-1];
+
+    initial begin
+        $readmemh(WEIGHT_INIT_FILE, weight_mem);
+    end
+
+    logic signed [7:0] weight_data;
+
+    always_ff @(posedge clk) begin
+        if (rst) begin
+            weight_data <= 0;
+        end else begin
+            weight_data <= weight_mem[weight_addr];
+        end
+    end
+
+
     // TODO: implement the DSP48E1 MACC-style accumulate:
     //   - register weight_addr's resulting weight value and act_data (the
     //     DSP48E1's registered A/B inputs)
@@ -47,5 +64,21 @@ module mac_lane #(
     //   - weight is signed (int8, from local memory); act_data must be
     //     ZERO-extended to match the multiplier width, not sign-extended
     //     (see the "non-negative operands" note in docs/lab3_rtl_datapath.md)
+
+    logic signed [8:0]  b_reg;      // registered activation (B input)
+
+    always_ff @(posedge clk) begin
+        if (rst) begin
+            acc_out <= 0;
+            b_reg <= 0;
+        end else begin
+            b_reg <= act_data;
+            if (acc_clear) begin
+                acc_out <= bias_in;
+            end else if (acc_en) begin
+                acc_out <= acc_out + (weight_data * b_reg);
+            end
+        end
+    end
 
 endmodule
