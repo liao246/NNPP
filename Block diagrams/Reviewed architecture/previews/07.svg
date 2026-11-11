@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2250" height="1220" viewBox="0 0 2250 1220">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>
+<rect width="2250" height="1220" fill="#ffffff"/>
+<path d="M50 105 H2200" stroke="#cbd5e1" stroke-width="2"/>
+<polyline points="285,285 440,285" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="770,285 930,285" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1260,285 1420,285" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1610,410 1610,560" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1420,635 1225,635" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="860,635 660,635" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="350,635 250,635 250,810 1040,810 1040,735" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="860,1015 660,1015" fill="none" stroke="#059669" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="350,1015 180,1015" fill="none" stroke="#c2410c" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<rect x="60" y="215" width="225" height="140" rx="10" fill="#ffffff" stroke="#475569" stroke-width="2"/>
+<text x="78" y="247" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">acc1_in</text>
+<path d="M76 261 H269" stroke="#475569" stroke-opacity="0.28"/>
+<text x="78" y="283" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">signed 32-bit</text>
+<text x="78" y="307" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">FC1 sum including bias</text>
+<rect x="440" y="180" width="330" height="205" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="458" y="212" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Round</text>
+<path d="M456 226 H754" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="458" y="248" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">R = 2^(SHIFT1−1)</text>
+<text x="458" y="272" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">rounded = acc1_in + R</text>
+<text x="458" y="296" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">signed 32-bit arithmetic</text>
+<text x="458" y="320" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">For SHIFT1=0: R=0</text>
+<rect x="930" y="180" width="330" height="205" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="948" y="212" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Arithmetic right shift</text>
+<path d="M946 226 H1244" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="948" y="248" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">shifted = rounded &gt;&gt;&gt; SHIFT1</text>
+<text x="948" y="272" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Keep signed 32-bit value</text>
+<text x="948" y="296" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">SHIFT1: calibrated constant</text>
+<rect x="1420" y="155" width="385" height="255" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="1438" y="187" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Saturate to int8</text>
+<path d="M1436 201 H1789" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="1438" y="223" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">if shifted &gt; 127: clamp8 = 127</text>
+<text x="1438" y="246" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">else if shifted &lt; −128: clamp8 = −128</text>
+<text x="1438" y="269" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">else: clamp8 = shifted[7:0]</text>
+<text x="1438" y="292" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">Compare wide; narrow only afterward</text>
+<text x="1438" y="315" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">clamp8 [signed 8]</text>
+<rect x="1420" y="560" width="385" height="150" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="1438" y="592" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">ReLU</text>
+<path d="M1436 606 H1789" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="1438" y="628" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">a1_comb = (clamp8 &lt; 0) ? 0 : clamp8</text>
+<text x="1438" y="651" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">a1_comb [signed 8], range 0…127</text>
+<rect x="860" y="535" width="365" height="200" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="878" y="567" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Output next-value logic</text>
+<path d="M876 581 H1209" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="878" y="603" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">next_a1 = a1_out</text>
+<text x="878" y="627" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">if en: next_a1 = a1_comb</text>
+<text x="878" y="651" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Output holds between requests</text>
+<rect x="350" y="550" width="310" height="180" rx="10" fill="#f3efff" stroke="#7c3aed" stroke-width="2"/>
+<text x="368" y="582" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Output FF</text>
+<path d="M366 596 H644" stroke="#7c3aed" stroke-opacity="0.28"/>
+<text x="368" y="618" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">a1_out [signed 8]</text>
+<text x="368" y="642" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">reset = 0</text>
+<text x="368" y="666" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">1-cycle result latency</text>
+<path d="M350 703 l13 9 l-13 9" fill="none" stroke="#7c3aed" stroke-width="2"/>
+<rect x="860" y="955" width="340" height="120" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+<text x="878" y="987" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Valid next-value logic</text>
+<path d="M876 1001 H1184" stroke="#c2410c" stroke-opacity="0.28"/>
+<text x="878" y="1023" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">next_valid = en [1]</text>
+<rect x="350" y="955" width="310" height="120" rx="10" fill="#f3efff" stroke="#7c3aed" stroke-width="2"/>
+<text x="368" y="987" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Valid FF</text>
+<path d="M366 1001 H644" stroke="#7c3aed" stroke-opacity="0.28"/>
+<text x="368" y="1023" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">valid_out [1]; reset = 0</text>
+<path d="M350 1048 l13 9 l-13 9" fill="none" stroke="#7c3aed" stroke-width="2"/>
+<rect x="1410" y="885" width="725" height="200" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+<text x="1428" y="911" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" fill="#0f172a">Bank and capture contract</text>
+<path d="M1426 922 H2119" stroke="#94a3b8" stroke-opacity="0.28"/>
+<text x="1428" y="941" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">en is a one-cycle pulse. valid_out is en delayed one cycle.</text>
+<text x="1428" y="964" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">All 64 instances share en, clk, rst and SHIFT1.</text>
+<text x="1428" y="987" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">Use one representative valid as requant_valid; all must agree.</text>
+<text x="1428" y="1010" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">The top activation bank captures on requant_valid.</text>
+<text x="1428" y="1033" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">Require rounded arithmetic to remain within signed int32.</text>
+<rect x="303.7" y="250" width="116.6" height="23" rx="4" fill="white"/>
+<text x="362" y="267" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">acc1_in [s32]</text>
+<rect x="791.7" y="250" width="116.6" height="23" rx="4" fill="white"/>
+<text x="850" y="267" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">rounded [s32]</text>
+<rect x="1281.7" y="250" width="116.6" height="23" rx="4" fill="white"/>
+<text x="1340" y="267" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">shifted [s32]</text>
+<rect x="1635.3" y="473" width="149.39999999999998" height="23" rx="4" fill="white"/>
+<text x="1710" y="490" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">clamp8 [signed 8]</text>
+<rect x="1243.2" y="598" width="157.6" height="23" rx="4" fill="white"/>
+<text x="1322" y="615" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">a1_comb [signed 8]</text>
+<rect x="681.2" y="598" width="157.6" height="23" rx="4" fill="white"/>
+<text x="760" y="615" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">next_a1 [signed 8]</text>
+<rect x="479.70000000000005" y="777" width="280.59999999999997" height="23" rx="4" fill="white"/>
+<text x="620" y="794" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">a1_out [signed 8] · hold feedback</text>
+<rect x="697.6" y="980" width="124.79999999999998" height="23" rx="4" fill="white"/>
+<text x="760" y="997" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#059669">next_valid [1]</text>
+<rect x="206.7" y="985" width="116.6" height="23" rx="4" fill="white"/>
+<text x="265.0" y="1002" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#c2410c">valid_out [1]</text>
+<text x="50" y="43" font-family="Segoe UI,Arial,sans-serif" font-size="30" fill="#0f172a" font-weight="700">One requant + ReLU module</text>
+<text x="50" y="82" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#475569" font-weight="400">Constant shift • signed intermediates • one registered result stage • identical bank latency</text>
+<text x="50" y="1182" font-family="Segoe UI,Arial,sans-serif" font-size="15" fill="#64748b" font-weight="400">MNIST / 196 → 64 → 10  •  REVIEW COPY  •  All sequential blocks: common clk [1], synchronous rst [1] (reset wires omitted).</text>
+<text x="1910" y="1182" font-family="Segoe UI,Arial,sans-serif" font-size="15" fill="#64748b" font-weight="400">07 · Requant + ReLU</text>
+<text x="890" y="516" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#c2410c" font-weight="400">en [1] →</text>
+<text x="360" y="765" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#2563eb" font-weight="400">a1_out → top activation capture bank</text>
+</svg>

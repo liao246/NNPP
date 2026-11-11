@@ -1,0 +1,49 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.5.2 Chrome/142.0.7444.265 Electron/39.6.1 Safari/537.36" version="29.5.2">
+  <diagram name="Page-1" id="4E8EAJVSXD_l9WdZrv17">
+    <mxGraphModel dx="1113" dy="779" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="dbN1Ni6q7ouI_jTukAtI-1" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" value="1" vertex="1">
+          <mxGeometry height="80" width="80" x="180" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="dbN1Ni6q7ouI_jTukAtI-6" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" value="2" vertex="1">
+          <mxGeometry height="80" width="80" x="180" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="dbN1Ni6q7ouI_jTukAtI-7" parent="1" style="sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;shape=mxgraph.cisco.misc.dot-dot;rotation=-90;" value="" vertex="1">
+          <mxGeometry height="8" width="37" x="201.5" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="dbN1Ni6q7ouI_jTukAtI-8" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" value="28" vertex="1">
+          <mxGeometry height="80" width="80" x="180" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="dbN1Ni6q7ouI_jTukAtI-9" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" value="2" vertex="1">
+          <mxGeometry height="80" width="80" x="310" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="dbN1Ni6q7ouI_jTukAtI-10" parent="1" style="sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;shape=mxgraph.cisco.misc.dot-dot;rotation=0;" value="" vertex="1">
+          <mxGeometry height="8" width="37" x="430" y="146" as="geometry" />
+        </mxCell>
+        <mxCell id="dbN1Ni6q7ouI_jTukAtI-11" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" value="28" vertex="1">
+          <mxGeometry height="80" width="80" x="510" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="dbN1Ni6q7ouI_jTukAtI-12" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" value="2" vertex="1">
+          <mxGeometry height="80" width="80" x="510" y="229" as="geometry" />
+        </mxCell>
+        <mxCell id="dbN1Ni6q7ouI_jTukAtI-13" parent="1" style="sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;shape=mxgraph.cisco.misc.dot-dot;rotation=-90;" value="" vertex="1">
+          <mxGeometry height="8" width="37" x="531.5" y="349" as="geometry" />
+        </mxCell>
+        <mxCell id="dbN1Ni6q7ouI_jTukAtI-14" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" value="28" vertex="1">
+          <mxGeometry height="80" width="80" x="510" y="399" as="geometry" />
+        </mxCell>
+        <mxCell id="dbN1Ni6q7ouI_jTukAtI-15" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" value="2" vertex="1">
+          <mxGeometry height="80" width="80" x="310" y="399" as="geometry" />
+        </mxCell>
+        <mxCell id="dbN1Ni6q7ouI_jTukAtI-16" parent="1" style="sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;shape=mxgraph.cisco.misc.dot-dot;rotation=0;" value="" vertex="1">
+          <mxGeometry height="8" width="37" x="430" y="435" as="geometry" />
+        </mxCell>
+        <mxCell id="dbN1Ni6q7ouI_jTukAtI-20" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="28 x 28 MNIST input" vertex="1">
+          <mxGeometry height="36" width="130" x="320" y="254" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

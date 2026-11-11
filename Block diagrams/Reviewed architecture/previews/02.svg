@@ -1,0 +1,176 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2200" height="1550" viewBox="0 0 2200 1550">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>
+<rect width="2200" height="1550" fill="#ffffff"/>
+<path d="M50 105 H2150" stroke="#cbd5e1" stroke-width="2"/>
+<polyline points="480,275 660,275" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="870,275 1040,275" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="955,275 955,125 285,125 285,180" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1445,275 1630,275" fill="none" stroke="#c2410c" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="470,575 650,575" fill="none" stroke="#c2410c" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1095,575 1260,575" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1490,575 1550,575 1550,725 875,725 875,680" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1490,575 1715,575" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="570,910 740,910" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1005,910 1055,910 1055,1040 325,1040 325,1010" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="870,835 870,775 1080,775" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="470,1270 640,1270" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="870,1270 930,1270 930,1420 275,1420 275,1350" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="870,1230 995,1230" fill="none" stroke="#c2410c" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1880,660 1880,865 1715,865" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1085,870 1250,870" fill="none" stroke="#c2410c" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1480,960 1480,1100 1415,1100 1415,1180" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1625,1270 1770,1270" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="2040,1270 2110,1270 2110,1420 1420,1420 1420,1350" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="2040,1230 2145,1230" fill="none" stroke="#c2410c" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<rect x="90" y="180" width="390" height="195" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+<text x="108" y="212" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Next-state logic</text>
+<path d="M106 226 H464" stroke="#c2410c" stroke-opacity="0.28"/>
+<text x="108" y="248" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Use transition diagram on page 03</text>
+<text x="108" y="272" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Inputs: start, fc1_done, requant_valid,</text>
+<text x="108" y="296" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">fc2_done, argmax_valid, current state</text>
+<text x="108" y="320" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Default: next_state = state</text>
+<rect x="660" y="190" width="210" height="175" rx="10" fill="#f3efff" stroke="#7c3aed" stroke-width="2"/>
+<text x="678" y="222" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">State FF</text>
+<path d="M676 236 H854" stroke="#7c3aed" stroke-opacity="0.28"/>
+<text x="678" y="258" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">state [4]</text>
+<text x="678" y="282" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">reset → IDLE</text>
+<path d="M660 338 l13 9 l-13 9" fill="none" stroke="#7c3aed" stroke-width="2"/>
+<rect x="1040" y="165" width="405" height="220" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+<text x="1058" y="197" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Moore output logic</text>
+<path d="M1056 211 H1429" stroke="#c2410c" stroke-opacity="0.28"/>
+<text x="1058" y="233" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Defaults: all outputs = 0</text>
+<text x="1058" y="257" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">busy = state is a processing state</text>
+<text x="1058" y="281" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">done = (state == DONE)</text>
+<text x="1058" y="305" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Start/enable pulses in *_START only</text>
+<text x="1058" y="329" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Full output table: page 03</text>
+<rect x="1630" y="165" width="475" height="220" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+<text x="1648" y="191" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" fill="#0f172a">Controller nets to page 01</text>
+<path d="M1646 202 H2089" stroke="#94a3b8" stroke-opacity="0.28"/>
+<text x="1648" y="221" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">fc1_start [1] → FC1</text>
+<text x="1648" y="244" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">requant_en [1] → requant bank</text>
+<text x="1648" y="267" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">fc2_start [1] → FC2</text>
+<text x="1648" y="290" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">argmax_en [1] → argmax</text>
+<text x="1648" y="313" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">busy [1], done [1] → external ports</text>
+<rect x="80" y="510" width="390" height="145" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+<text x="98" y="542" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Request acceptance</text>
+<path d="M96 556 H454" stroke="#c2410c" stroke-opacity="0.28"/>
+<text x="98" y="578" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">accept_start = start AND</text>
+<text x="98" y="602" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">                  (state == IDLE OR DONE)</text>
+<text x="98" y="626" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">start assumed clean, one-cycle</text>
+<rect x="650" y="485" width="445" height="195" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="668" y="517" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Image selection / next value</text>
+<path d="M666 531 H1079" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="668" y="553" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Default: next_img_idx = img_idx_r</text>
+<text x="668" y="577" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">if accept_start:</text>
+<text x="668" y="601" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">  next_img_idx = min(img_idx, 19)</text>
+<text x="668" y="625" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Input img_idx [5]; clamp before storing</text>
+<rect x="1260" y="505" width="230" height="155" rx="10" fill="#f3efff" stroke="#7c3aed" stroke-width="2"/>
+<text x="1278" y="537" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Image index FF</text>
+<path d="M1276 551 H1474" stroke="#7c3aed" stroke-opacity="0.28"/>
+<text x="1278" y="573" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">img_idx_r [5]</text>
+<text x="1278" y="597" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">reset = 0</text>
+<path d="M1260 633 l13 9 l-13 9" fill="none" stroke="#7c3aed" stroke-width="2"/>
+<rect x="1715" y="505" width="335" height="155" rx="10" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+<text x="1733" y="537" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Label ROM</text>
+<path d="M1731 551 H2034" stroke="#059669" stroke-opacity="0.28"/>
+<text x="1733" y="573" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">20 × 4 bits</text>
+<text x="1733" y="597" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">1-cycle synchronous read</text>
+<path d="M1715 633 l13 9 l-13 9" fill="none" stroke="#059669" stroke-width="2"/>
+<rect x="80" y="810" width="490" height="200" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="98" y="842" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Cycle counter / next value</text>
+<path d="M96 856 H554" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="98" y="878" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">if accept_start: next_count = 0</text>
+<text x="98" y="902" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">else if busy: next_count = count + 1</text>
+<text x="98" y="926" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">else: next_count = count</text>
+<text x="98" y="950" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Counts busy cycles through completion edge</text>
+<rect x="740" y="835" width="265" height="145" rx="10" fill="#f3efff" stroke="#7c3aed" stroke-width="2"/>
+<text x="758" y="867" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Cycle count FF</text>
+<path d="M756 881 H989" stroke="#7c3aed" stroke-opacity="0.28"/>
+<text x="758" y="903" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">count [16]</text>
+<text x="758" y="927" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">reset = 0</text>
+<path d="M740 953 l13 9 l-13 9" fill="none" stroke="#7c3aed" stroke-width="2"/>
+<rect x="80" y="1180" width="390" height="170" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="98" y="1212" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Digit capture / next value</text>
+<path d="M96 1226 H454" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="98" y="1248" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">next_pred = pred_digit</text>
+<text x="98" y="1272" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">if argmax_valid:</text>
+<text x="98" y="1296" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">  next_pred = argmax_digit</text>
+<rect x="640" y="1195" width="230" height="145" rx="10" fill="#f3efff" stroke="#7c3aed" stroke-width="2"/>
+<text x="658" y="1227" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Digit FF</text>
+<path d="M656 1241 H854" stroke="#7c3aed" stroke-opacity="0.28"/>
+<text x="658" y="1263" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">pred_digit [4]</text>
+<text x="658" y="1287" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">reset = 0</text>
+<path d="M640 1313 l13 9 l-13 9" fill="none" stroke="#7c3aed" stroke-width="2"/>
+<rect x="1250" y="805" width="465" height="155" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="1268" y="837" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Label comparison</text>
+<path d="M1266 851 H1699" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="1268" y="873" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">match = (argmax_digit == label)</text>
+<text x="1268" y="897" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Compare the valid argmax output,</text>
+<text x="1268" y="921" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">before the final digit FF</text>
+<rect x="1210" y="1180" width="415" height="170" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="1228" y="1212" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Correct capture / next value</text>
+<path d="M1226 1226 H1609" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="1228" y="1248" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">next_correct = correct</text>
+<text x="1228" y="1272" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">if argmax_valid:</text>
+<text x="1228" y="1296" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">  next_correct = match</text>
+<rect x="1770" y="1195" width="270" height="145" rx="10" fill="#f3efff" stroke="#7c3aed" stroke-width="2"/>
+<text x="1788" y="1227" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Correct FF</text>
+<path d="M1786 1241 H2024" stroke="#7c3aed" stroke-opacity="0.28"/>
+<text x="1788" y="1263" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">correct [1]</text>
+<text x="1788" y="1287" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">reset = 0</text>
+<path d="M1770 1313 l13 9 l-13 9" fill="none" stroke="#7c3aed" stroke-width="2"/>
+<rect x="1210" y="405" width="870" height="85" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+<text x="1228" y="431" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" fill="#0f172a">One completion edge</text>
+<path d="M1226 442 H2064" stroke="#94a3b8" stroke-opacity="0.28"/>
+<text x="1228" y="461.0" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">In ARGMAX_WAIT, argmax_valid captures pred_digit and correct while the state FF enters DONE.</text>
+<text x="1228" y="478.0" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">No delayed-enable FF is needed. Score debug packing: score_debug[32×c +: 32] = acc2[c], c=0…9.</text>
+<rect x="507.6" y="240" width="124.79999999999998" height="23" rx="4" fill="white"/>
+<text x="570" y="257" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">next_state [4]</text>
+<rect x="913.1" y="240" width="83.8" height="23" rx="4" fill="white"/>
+<text x="955" y="257" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">state [4]</text>
+<rect x="538.0" y="97" width="174.0" height="23" rx="4" fill="white"/>
+<text x="625" y="114" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">state [4] · feedback</text>
+<rect x="1474.6" y="241" width="124.79999999999998" height="23" rx="4" fill="white"/>
+<text x="1537" y="258" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#c2410c">6 control bits</text>
+<rect x="489.4" y="540" width="141.2" height="23" rx="4" fill="white"/>
+<text x="560" y="557" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#c2410c">accept_start [1]</text>
+<rect x="1106.4" y="540" width="141.2" height="23" rx="4" fill="white"/>
+<text x="1177" y="557" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">next_img_idx [5]</text>
+<rect x="1076.1" y="695" width="247.79999999999998" height="23" rx="4" fill="white"/>
+<text x="1200" y="712" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">img_idx_r [5] · hold feedback</text>
+<rect x="1543.7" y="540" width="116.6" height="23" rx="4" fill="white"/>
+<text x="1602" y="557" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">img_idx_r [5]</text>
+<rect x="588.5" y="875" width="133.0" height="23" rx="4" fill="white"/>
+<text x="655" y="892" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">next_count [16]</text>
+<rect x="559.2" y="1010" width="321.59999999999997" height="23" rx="4" fill="white"/>
+<text x="720" y="1027" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">count [16] · hold / increment feedback</text>
+<rect x="919.4" y="742" width="141.2" height="23" rx="4" fill="white"/>
+<text x="990" y="759" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">cycle_count [16]</text>
+<rect x="496.7" y="1236" width="116.6" height="23" rx="4" fill="white"/>
+<text x="555" y="1253" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">next_pred [4]</text>
+<rect x="452.0" y="1390" width="255.99999999999997" height="23" rx="4" fill="white"/>
+<text x="580" y="1407" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">pred_digit [4] · hold feedback</text>
+<rect x="870.1" y="1200" width="124.79999999999998" height="23" rx="4" fill="white"/>
+<text x="932.5" y="1217" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#c2410c">pred_digit [4]</text>
+<rect x="1768.1" y="830" width="83.8" height="23" rx="4" fill="white"/>
+<text x="1810" y="847" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">label [4]</text>
+<rect x="1096.9" y="840" width="141.2" height="23" rx="4" fill="white"/>
+<text x="1167.5" y="857" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#c2410c">argmax_digit [4]</text>
+<rect x="1498.1" y="1069" width="83.8" height="23" rx="4" fill="white"/>
+<text x="1540" y="1086" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">match [1]</text>
+<rect x="1626.4" y="1234" width="141.2" height="23" rx="4" fill="white"/>
+<text x="1697" y="1251" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">next_correct [1]</text>
+<rect x="1674.3" y="1390" width="231.39999999999998" height="23" rx="4" fill="white"/>
+<text x="1790" y="1407" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">correct [1] · hold feedback</text>
+<rect x="2042.4" y="1200" width="100.19999999999999" height="23" rx="4" fill="white"/>
+<text x="2092.5" y="1217" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#c2410c">correct [1]</text>
+<text x="50" y="43" font-family="Segoe UI,Arial,sans-serif" font-size="30" fill="#0f172a" font-weight="700">Top controller, input capture &amp; results</text>
+<text x="50" y="82" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#475569" font-weight="400">One accepted request • one coherent completion edge • explicit hold feedback</text>
+<text x="50" y="1512" font-family="Segoe UI,Arial,sans-serif" font-size="15" fill="#64748b" font-weight="400">MNIST / 196 → 64 → 10  •  REVIEW COPY  •  All sequential blocks: common clk [1], synchronous rst [1] (reset wires omitted).</text>
+<text x="1860" y="1512" font-family="Segoe UI,Arial,sans-serif" font-size="15" fill="#64748b" font-weight="400">02 · Top control</text>
+<text x="100" y="490" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#c2410c" font-weight="400">start [1], state [4] →</text>
+<text x="1290" y="690" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#2563eb" font-weight="400">→ image address, page 01</text>
+<text x="98" y="790" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#c2410c" font-weight="400">accept_start [1], busy [1] →</text>
+<text x="100" y="1160" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#059669" font-weight="400">argmax_digit [4], argmax_valid [1] →</text>
+<text x="1230" y="1160" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#059669" font-weight="400">argmax_valid [1] →</text>
+</svg>

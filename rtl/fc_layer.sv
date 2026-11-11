@@ -20,11 +20,10 @@ module fc_layer #(
     parameter int    N_IN   = 196,
     parameter int    N_OUT  = 64,
     parameter int    LANES  = 16,
-    parameter string BIAS_INIT_FILE = ""   // TODO: int32 bias ROM for this layer, N_OUT entries
-    // TODO: decide how each internal mac_lane gets its own per-lane weight
-    // init file (a per-instance file-name parameter array? a generate loop
-    // with a naming convention? your call -- see lab3.md's "weight file init
-    // is an open decision" note)
+    // Each lane loads "<FILE_PREFIX>_lane<i>_weights.hex" and
+    // "<FILE_PREFIX>_lane<i>_bias.hex". digit_top passes "fc1" / "fc2" so the
+    // two instances of this module don't load each other's files.
+    parameter string FILE_PREFIX = ""
 )(
     input  logic clk,
     input  logic rst,
@@ -43,28 +42,196 @@ module fc_layer #(
 
     localparam int NUM_BATCHES = (N_OUT + LANES - 1) / LANES;  // ceil(N_OUT/LANES); FC2's last (only) batch is partial: 10 of 16 lanes valid
 
-    // TODO: instantiate LANES x mac_lane, all sharing one broadcast
-    // weight_addr and one broadcast act_data (per lab3.md's addressing
-    // background) but each with its own WEIGHT_INIT_FILE.
+    localparam int BATCH_W = (NUM_BATCHES > 1) ? $clog2(NUM_BATCHES) : 1;
 
-    // TODO: bias ROM (N_OUT x int32), loaded from BIAS_INIT_FILE.
+    logic [$clog2(N_IN + 2)-1:0]           weight_count;
+    logic [BATCH_W-1:0]                    batch;
+    logic [BATCH_W-1:0]                    bias_addr;
+    logic [$clog2(NUM_BATCHES * N_IN)-1:0] weight_addr;
+    logic weights_done, batches_done;
 
-    // TODO: batch FSM:
-    //   for batch in 0..NUM_BATCHES-1:
-    //     assert acc_clear on all lanes for one cycle, loading each lane's
-    //       accumulator with THIS BATCH's neuron's bias (bias_addr = batch*LANES + lane_id,
-    //       only valid for lane_id < N_OUT - batch*LANES on a partial final batch)
-    //     for i in 0..N_IN-1:
-    //       drive act_addr = i, wait for act_data's read latency, drive
-    //       weight_addr for this lane's local memory accordingly, assert
-    //       acc_en for one MAC cycle
-    //     capture each active lane's acc_out into acc_out[batch*LANES + lane_id]
-    //   assert done once all batches complete; busy high throughout.
-    //
-    // Handle the FC2 partial-batch case explicitly: lanes 10-15 during the
-    // (only) FC2 batch are still running the same control sequence, but
-    // their acc_out values must not be written into the N_OUT=10-sized
-    // acc_out array -- gate the capture step by lane validity, not just by
-    // batch index.
+    // fsm
+    typedef enum logic [2:0] {
+        IDLE,
+        CLEAR,
+        FILL0,
+        FILL1,
+        ACCUMULATE,
+        CAPTURE,
+        DONE
+    } state_t;
+
+    state_t state, next_state;
+
+    logic acc_clear, acc_en, valid_out, batch_clr, count_en;
+
+    // raw per-lane accumulator outputs (transient, LANES wide) vs. the
+    // captured result array (persistent, N_OUT wide)
+    logic signed [31:0] mac_lane_out [0:LANES-1];
+    logic signed [31:0] next_acc_out [0:N_OUT-1];
+
+    assign bias_addr = batch;
+
+
+    genvar i;
+
+    generate
+        for (i = 0; i < LANES; i++) begin : mac_lane_gen
+            mac_lane #(
+                .LOCAL_MEM_DEPTH(NUM_BATCHES * N_IN),
+                .WEIGHT_INIT_FILE($sformatf("%s_lane%0d_weights.hex", FILE_PREFIX, i)),
+                .BIAS_INIT_FILE  ($sformatf("%s_lane%0d_bias.hex",    FILE_PREFIX, i)),
+                .BIAS_DEPTH(NUM_BATCHES)
+            ) mac_lane_inst (
+                .clk(clk),
+                .rst(rst),
+                .weight_addr(weight_addr),
+                .act_data(act_data),
+                .acc_clear(acc_clear),
+                .bias_addr(bias_addr),
+                .acc_en(acc_en),
+                .acc_out(mac_lane_out[i])
+            );
+        end
+    endgenerate
+
+    always_comb begin
+        next_acc_out = acc_out;                          // default: hold all N_OUT
+        for (int lane = 0; lane < LANES; lane++) begin
+            if (valid_out && (batch*LANES + lane < N_OUT))
+                next_acc_out[batch*LANES + lane] = mac_lane_out[lane];
+        end
+    end
+
+    always_ff @(posedge clk) begin
+        if (rst) begin
+            for (int k = 0; k < N_OUT; k++) acc_out[k] <= '0;
+        end else begin
+            acc_out <= next_acc_out;
+        end
+    end
+
+
+    always_comb begin
+        acc_clear = 0;
+        acc_en    = 0;
+        valid_out = 0;
+        done      = 0;
+        busy      = 0;
+        batch_clr = 0;
+        count_en  = 0;
+
+        case (state)
+            IDLE: begin
+                if (start) next_state = CLEAR;
+                else next_state = IDLE;
+            end
+            CLEAR: begin
+                next_state = FILL0;
+            end
+            FILL0: begin
+                next_state = FILL1;
+            end
+            FILL1: begin
+                next_state = ACCUMULATE;
+            end
+            ACCUMULATE: begin
+                if (weights_done) next_state = CAPTURE;
+                else next_state = ACCUMULATE;
+            end
+            CAPTURE: begin
+                if (batches_done) next_state = DONE;
+                else next_state = CLEAR;
+            end
+            DONE: begin
+                next_state = IDLE;
+            end
+            default: next_state = IDLE;
+        endcase
+        
+        case (state)
+            IDLE: begin
+                acc_clear = 0;
+                acc_en = 0;
+                valid_out = 0;
+                done = 0;
+                busy = 0;
+                batch_clr = 1;
+                count_en = 0;
+            end
+            CLEAR: begin
+                acc_clear = 1;
+                busy = 1;
+            end
+            FILL0: begin
+                busy = 1;
+                count_en = 1;
+            end
+            FILL1: begin
+                busy = 1;
+                count_en = 1;
+            end
+            ACCUMULATE: begin
+                busy = 1;
+                acc_en = 1;
+                count_en = 1;
+            end
+            CAPTURE: begin
+                busy = 1;
+                valid_out = 1;
+            end
+            DONE: begin
+                busy = 0;
+                done = 1;
+            end
+            default: begin
+                acc_clear = 0;
+                acc_en = 0;
+                valid_out = 0;
+                done = 0;
+                busy = 0;
+                batch_clr = 1;
+                count_en = 0;
+            end
+        endcase
+    end
+
+    always_ff @(posedge clk) begin
+        if (rst) begin
+            state <= IDLE;
+        end else begin
+            state <= next_state;
+        end
+    end
+
+
+    // counters:
+
+    counter #(.MAX_COUNT(N_IN + 1)) weights_counter (
+    .clk(clk), .rst(rst),
+    .clear(acc_clear), .en(count_en),
+    .count(weight_count), .done(weights_done)
+    );
+
+    counter #(.MAX_COUNT(NUM_BATCHES - 1)) batch_counter (
+        .clk(clk), .rst(rst),
+        .clear(batch_clr), .en(valid_out),
+        .count(batch), .done(batches_done)
+    );
+
+
+
+    always_comb begin
+        if (weight_count > N_IN-1) begin
+            act_addr = N_IN-1;
+        end else begin
+            act_addr = weight_count;
+        end
+    end
+
+    always_comb begin
+        weight_addr = batch * N_IN + act_addr;
+    end
+
 
 endmodule

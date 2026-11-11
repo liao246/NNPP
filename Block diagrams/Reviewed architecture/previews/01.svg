@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2200" height="1260" viewBox="0 0 2200 1260">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>
+<rect width="2200" height="1260" fill="#ffffff"/>
+<path d="M50 105 H2150" stroke="#cbd5e1" stroke-width="2"/>
+<polyline points="300,205 420,205" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="750,205 870,205" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1140,205 1280,205" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1560,205 1630,205 1630,320 230,320 230,405" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="90,470 45,470 45,120 570,120 570,155" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="375,505 530,505" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="805,505 965,505" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1285,505 1450,505" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1590,595 1590,655 1125,655 1125,615" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="805,570 910,570" fill="none" stroke="#059669" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1735,505 1840,505 1840,720 1610,720 1610,790" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1450,865 1305,865" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1120,865 955,865" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="955,935 1030,935 1030,1030 1830,1030 1830,895 1770,895" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="660,865 500,865" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1795,850 1880,850" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="2015,970 2015,1020" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="190,865 100,865 100,1060 310,1060" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<rect x="70" y="165" width="230" height="105" rx="10" fill="#f3efff" stroke="#7c3aed" stroke-width="2"/>
+<text x="88" y="197" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Selected image</text>
+<path d="M86 211 H284" stroke="#7c3aed" stroke-opacity="0.28"/>
+<text x="88" y="233" font-family="Segoe UI,Arial,sans-serif" font-size="13" fill="#334155" xml:space="preserve">img_idx_r [5]</text>
+<text x="88" y="253" font-family="Segoe UI,Arial,sans-serif" font-size="13" fill="#334155" xml:space="preserve">accepted + clamped on page 02</text>
+<path d="M70 243 l13 9 l-13 9" fill="none" stroke="#7c3aed" stroke-width="2"/>
+<rect x="420" y="155" width="330" height="125" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="438" y="187" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Image address</text>
+<path d="M436 201 H734" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="438" y="223" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">image_addr = img_idx_r × 196</text>
+<text x="438" y="247" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">                         + fc1_act_addr</text>
+<rect x="870" y="155" width="270" height="125" rx="10" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+<text x="888" y="187" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Image ROM</text>
+<path d="M886 201 H1124" stroke="#059669" stroke-opacity="0.28"/>
+<text x="888" y="223" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">3,920 × 8 bits</text>
+<text x="888" y="247" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">1-cycle synchronous read</text>
+<path d="M870 253 l13 9 l-13 9" fill="none" stroke="#059669" stroke-width="2"/>
+<rect x="1280" y="155" width="280" height="125" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="1298" y="187" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Zero extension</text>
+<path d="M1296 201 H1544" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="1298" y="223" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">pixel9 = {0, pixel8}</text>
+<text x="1298" y="247" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Nonnegative signed value [9]</text>
+<rect x="90" y="405" width="285" height="200" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="108" y="437" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">FC layer 1</text>
+<path d="M106 451 H359" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="108" y="473" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">N_IN=196; N_OUT=64</text>
+<text x="108" y="497" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">LANES=16; BATCHES=4</text>
+<text x="108" y="521" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Local lane weights + biases</text>
+<text x="108" y="545" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Details: pages 04–06</text>
+<path d="M90 578 l13 9 l-13 9" fill="none" stroke="#2563eb" stroke-width="2"/>
+<rect x="530" y="405" width="275" height="200" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="548" y="437" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Requant + ReLU bank</text>
+<path d="M546 451 H789" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="548" y="473" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">64 parallel instances</text>
+<text x="548" y="497" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">SHIFT1 = calibrated constant</text>
+<text x="548" y="521" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">1-cycle result + valid</text>
+<text x="548" y="545" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Details: page 07</text>
+<path d="M530 578 l13 9 l-13 9" fill="none" stroke="#2563eb" stroke-width="2"/>
+<rect x="965" y="400" width="320" height="215" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="983" y="432" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Activation capture logic</text>
+<path d="M981 446 H1269" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="983" y="468" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Default: next_a1_bank = a1_bank</text>
+<text x="983" y="492" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">if requant_valid:</text>
+<text x="983" y="516" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">  next_a1_bank = requant_out</text>
+<text x="983" y="540" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">All 64 values captured together</text>
+<rect x="1450" y="415" width="285" height="180" rx="10" fill="#f3efff" stroke="#7c3aed" stroke-width="2"/>
+<text x="1468" y="447" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Activation bank</text>
+<path d="M1466 461 H1719" stroke="#7c3aed" stroke-opacity="0.28"/>
+<text x="1468" y="483" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">a1_bank [0:63] × 8 bits</text>
+<text x="1468" y="507" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">512-bit storage</text>
+<text x="1468" y="531" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Hold until next valid capture</text>
+<path d="M1450 568 l13 9 l-13 9" fill="none" stroke="#7c3aed" stroke-width="2"/>
+<rect x="1450" y="790" width="320" height="155" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="1468" y="822" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Activation selection</text>
+<path d="M1466 836 H1754" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="1468" y="858" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">selected8 = a1_bank[fc2_act_addr]</text>
+<text x="1468" y="882" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">act9 = {0, selected8} [9]</text>
+<rect x="1120" y="795" width="185" height="145" rx="10" fill="#f3efff" stroke="#7c3aed" stroke-width="2"/>
+<text x="1138" y="827" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Delay FF</text>
+<path d="M1136 841 H1289" stroke="#7c3aed" stroke-opacity="0.28"/>
+<text x="1138" y="863" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">act9_delay [9]</text>
+<text x="1138" y="887" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">1 cycle</text>
+<path d="M1120 913 l13 9 l-13 9" fill="none" stroke="#7c3aed" stroke-width="2"/>
+<rect x="660" y="755" width="295" height="230" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="678" y="787" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">FC layer 2</text>
+<path d="M676 801 H939" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="678" y="823" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">N_IN=64; N_OUT=10</text>
+<text x="678" y="847" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">LANES=16; BATCHES=1</text>
+<text x="678" y="871" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Lanes 0–9 produce scores</text>
+<text x="678" y="895" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Lanes 10–15: zero initialized</text>
+<path d="M660 958 l13 9 l-13 9" fill="none" stroke="#2563eb" stroke-width="2"/>
+<rect x="190" y="780" width="310" height="170" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="208" y="812" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Clocked argmax</text>
+<path d="M206 826 H484" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="208" y="848" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">10 signed 32-bit scores</text>
+<text x="208" y="872" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Largest score; smallest tied index</text>
+<text x="208" y="896" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Result + valid aligned</text>
+<path d="M190 923 l13 9 l-13 9" fill="none" stroke="#2563eb" stroke-width="2"/>
+<rect x="1880" y="805" width="270" height="165" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="1898" y="837" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Debug packing</text>
+<path d="M1896 851 H2134" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="1898" y="873" font-family="Segoe UI,Arial,sans-serif" font-size="15" fill="#334155" xml:space="preserve">For c = 0…9:</text>
+<text x="1898" y="895" font-family="Segoe UI,Arial,sans-serif" font-size="15" fill="#334155" xml:space="preserve">  score_debug[32×c +: 32]</text>
+<text x="1898" y="917" font-family="Segoe UI,Arial,sans-serif" font-size="15" fill="#334155" xml:space="preserve">    = acc2[c]</text>
+<text x="1898" y="939" font-family="Segoe UI,Arial,sans-serif" font-size="15" fill="#334155" xml:space="preserve">Wiring only; no register</text>
+<rect x="480" y="1070" width="1280" height="95" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+<text x="498" y="1096" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" fill="#0f172a">Result handoff → page 02</text>
+<path d="M496 1107 H1744" stroke="#94a3b8" stroke-opacity="0.28"/>
+<text x="498" y="1126" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">argmax_digit feeds both pred_digit capture and the label comparator; both capture on argmax_valid.</text>
+<text x="498" y="1149" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">acc2 also feeds score_debug through wiring only. Named control nets connect to the controller on page 02.</text>
+<rect x="1690" y="155" width="430" height="125" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+<text x="1708" y="181" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" fill="#0f172a">Preserved architecture</text>
+<path d="M1706 192 H2104" stroke="#94a3b8" stroke-opacity="0.28"/>
+<text x="1708" y="211" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">FC1 source latency = image ROM (1).</text>
+<text x="1708" y="234" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">FC2 source latency = delay FF (1).</text>
+<text x="1708" y="257" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">Each MAC adds its activation FF (1).</text>
+<rect x="301.7" y="173" width="116.6" height="23" rx="4" fill="white"/>
+<text x="360" y="190" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">img_idx_r [5]</text>
+<rect x="743.5" y="173" width="133.0" height="23" rx="4" fill="white"/>
+<text x="810" y="190" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">image_addr [12]</text>
+<rect x="1164.0" y="173" width="92.0" height="23" rx="4" fill="white"/>
+<text x="1210" y="190" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">pixel8 [8]</text>
+<rect x="884.0" y="288" width="92.0" height="23" rx="4" fill="white"/>
+<text x="930" y="305" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">pixel9 [9]</text>
+<rect x="214.4" y="91" width="141.2" height="23" rx="4" fill="white"/>
+<text x="285" y="108" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">fc1_act_addr [8]</text>
+<rect x="385.5" y="471" width="133.0" height="23" rx="4" fill="white"/>
+<text x="452" y="488" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">acc1 [64 × s32]</text>
+<rect x="793.9" y="465" width="182.2" height="23" rx="4" fill="white"/>
+<text x="885" y="482" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">requant_out [64 × s8]</text>
+<rect x="1288.2" y="466" width="157.6" height="23" rx="4" fill="white"/>
+<text x="1367" y="483" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">next_a1_bank [512]</text>
+<rect x="1246.1" y="625" width="247.79999999999998" height="23" rx="4" fill="white"/>
+<text x="1370" y="642" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">a1_bank [512] · hold feedback</text>
+<rect x="782.8" y="540" width="149.39999999999998" height="23" rx="4" fill="white"/>
+<text x="857.5" y="557" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#059669">requant_valid [1]</text>
+<rect x="1634.4" y="689" width="141.2" height="23" rx="4" fill="white"/>
+<text x="1705" y="706" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">a1_bank [64 × 8]</text>
+<rect x="1339.2" y="833" width="75.6" height="23" rx="4" fill="white"/>
+<text x="1377" y="850" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">act9 [9]</text>
+<rect x="974.6" y="833" width="124.79999999999998" height="23" rx="4" fill="white"/>
+<text x="1037" y="850" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">act9_delay [9]</text>
+<rect x="1329.4" y="999" width="141.2" height="23" rx="4" fill="white"/>
+<text x="1400" y="1016" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">fc2_act_addr [6]</text>
+<rect x="513.5" y="831" width="133.0" height="23" rx="4" fill="white"/>
+<text x="580" y="848" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">acc2 [10 × s32]</text>
+<rect x="1771.0" y="820" width="133.0" height="23" rx="4" fill="white"/>
+<text x="1837.5" y="837" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#2563eb">acc2 [10 × s32]</text>
+<rect x="1940.3" y="1033" width="149.39999999999998" height="23" rx="4" fill="white"/>
+<text x="2015" y="1050" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">score_debug [320]</text>
+<rect x="171.5" y="1069" width="297.0" height="23" rx="4" fill="white"/>
+<text x="320" y="1086" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">argmax_digit [4] + argmax_valid [1]</text>
+<text x="50" y="43" font-family="Segoe UI,Arial,sans-serif" font-size="30" fill="#0f172a" font-weight="700">System datapath</text>
+<text x="50" y="82" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#475569" font-weight="400">Two dedicated FC engines • 16 lanes each • explicit registered handoffs</text>
+<text x="50" y="1222" font-family="Segoe UI,Arial,sans-serif" font-size="15" fill="#64748b" font-weight="400">MNIST / 196 → 64 → 10  •  REVIEW COPY  •  All sequential blocks: common clk [1], synchronous rst [1] (reset wires omitted).</text>
+<text x="1860" y="1222" font-family="Segoe UI,Arial,sans-serif" font-size="15" fill="#64748b" font-weight="400">01 · System datapath</text>
+<text x="108" y="390" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#c2410c" font-weight="400">start: fc1_start [1]   done: fc1_done [1]</text>
+<text x="550" y="390" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#c2410c" font-weight="400">en: requant_en [1]</text>
+<text x="984" y="382" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#059669" font-weight="400">capture: requant_valid [1]</text>
+<text x="680" y="739" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#c2410c" font-weight="400">start: fc2_start [1]   done: fc2_done [1]</text>
+<text x="210" y="764" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#c2410c" font-weight="400">en: argmax_en [1]</text>
+</svg>

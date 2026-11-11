@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2200" height="1450" viewBox="0 0 2200 1450">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>
+<rect width="2200" height="1450" fill="#ffffff"/>
+<path d="M50 105 H2150" stroke="#cbd5e1" stroke-width="2"/>
+<rect x="70" y="175" width="1240" height="450" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="88" y="207" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">One batch — values during each state cycle</text>
+<path d="M86 221 H1294" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="88" y="243" font-family="Consolas,monospace" font-size="19" fill="#334155" xml:space="preserve">State              q                address i             MAC at closing edge</text>
+<text x="88" y="269" font-family="Consolas,monospace" font-size="19" fill="#334155" xml:space="preserve">CLEAR              old              clamped old           load current bias; reset q</text>
+<text x="88" y="295" font-family="Consolas,monospace" font-size="19" fill="#334155" xml:space="preserve">FILL_0             0                0                     disabled</text>
+<text x="88" y="321" font-family="Consolas,monospace" font-size="19" fill="#334155" xml:space="preserve">FILL_1             1                1                     disabled</text>
+<text x="88" y="347" font-family="Consolas,monospace" font-size="19" fill="#334155" xml:space="preserve">ACCUMULATE         2                2                     input 0</text>
+<text x="88" y="373" font-family="Consolas,monospace" font-size="19" fill="#334155" xml:space="preserve">ACCUMULATE         …                …                     …</text>
+<text x="88" y="399" font-family="Consolas,monospace" font-size="19" fill="#334155" xml:space="preserve">ACCUMULATE         N_IN−1           N_IN−1                input N_IN−3</text>
+<text x="88" y="425" font-family="Consolas,monospace" font-size="19" fill="#334155" xml:space="preserve">ACCUMULATE         N_IN             N_IN−1                input N_IN−2</text>
+<text x="88" y="451" font-family="Consolas,monospace" font-size="19" fill="#334155" xml:space="preserve">ACCUMULATE         N_IN+1           N_IN−1                input N_IN−1</text>
+<text x="88" y="477" font-family="Consolas,monospace" font-size="19" fill="#334155" xml:space="preserve">CAPTURE            N_IN+1           N_IN−1                store final sum; advance batch</text>
+<rect x="1450" y="175" width="650" height="215" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+<text x="1468" y="201" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" fill="#0f172a">Cycle budget</text>
+<path d="M1466 212 H2084" stroke="#94a3b8" stroke-opacity="0.28"/>
+<text x="1468" y="231" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">Per batch: CLEAR(1) + FILL(2) + MAC(N_IN)</text>
+<text x="1468" y="254" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">                  + CAPTURE(1) = N_IN+4 cycles.</text>
+<text x="1468" y="277" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">FC1: 4 × 200 = 800 cycles. FC2: 1 × 68 = 68.</text>
+<text x="1468" y="300" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">Top handshakes, requant and argmax add overhead.</text>
+<text x="1468" y="323" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">Final total depends on the chosen argmax latency.</text>
+<rect x="1450" y="440" width="650" height="185" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+<text x="1468" y="466" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" fill="#0f172a">Counter terminal rules</text>
+<path d="M1466 477 H2084" stroke="#94a3b8" stroke-opacity="0.28"/>
+<text x="1468" y="496" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">q ranges 0…N_IN+1; hold at terminal.</text>
+<text x="1468" y="519" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">weights_done = (q == N_IN+1).</text>
+<text x="1468" y="542" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">batch ranges 0…B−1; hold at terminal.</text>
+<text x="1468" y="565" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">batches_done = (batch == B−1).</text>
+<rect x="70" y="735" width="1110" height="230" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="88" y="767" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Contiguous lane ownership — use the same n everywhere</text>
+<path d="M86 781 H1164" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="88" y="803" font-family="Segoe UI,Arial,sans-serif" font-size="18" fill="#334155" xml:space="preserve">n = lane × B + batch; B = ceil(N_OUT / LANES)</text>
+<text x="88" y="828" font-family="Segoe UI,Arial,sans-serif" font-size="18" fill="#334155" xml:space="preserve">FC1: lane 0 → neurons 0,1,2,3; lane 1 → 4,5,6,7; lane 15 → 60,61,62,63.</text>
+<text x="88" y="853" font-family="Segoe UI,Arial,sans-serif" font-size="18" fill="#334155" xml:space="preserve">Local weight address = batch × N_IN + i; local bias address = batch.</text>
+<text x="88" y="878" font-family="Segoe UI,Arial,sans-serif" font-size="18" fill="#334155" xml:space="preserve">Capture destination = acc_out[n]; valid lane result if n &lt; N_OUT.</text>
+<text x="88" y="903" font-family="Segoe UI,Arial,sans-serif" font-size="18" fill="#334155" xml:space="preserve">FC2: B=1; n=lane; only lanes 0…9 write scores.</text>
+<rect x="1320" y="735" width="780" height="230" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="1338" y="767" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Widths — FC1 / FC2</text>
+<path d="M1336 781 H2084" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="1338" y="803" font-family="Segoe UI,Arial,sans-serif" font-size="18" fill="#334155" xml:space="preserve">Activation address: 8 / 6; q: 8 / 7.</text>
+<text x="1338" y="828" font-family="Segoe UI,Arial,sans-serif" font-size="18" fill="#334155" xml:space="preserve">Batch and bias address: 2 / 1 (guard B=1 width).</text>
+<text x="1338" y="853" font-family="Segoe UI,Arial,sans-serif" font-size="18" fill="#334155" xml:space="preserve">Local weight address: 10 / 6; weight data: signed 8.</text>
+<text x="1338" y="878" font-family="Segoe UI,Arial,sans-serif" font-size="18" fill="#334155" xml:space="preserve">Activation operand: signed 9 with top bit zero.</text>
+<text x="1338" y="903" font-family="Segoe UI,Arial,sans-serif" font-size="18" fill="#334155" xml:space="preserve">Product: signed 17; accumulator and bias: signed 32.</text>
+<rect x="70" y="1080" width="1020" height="220" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+<text x="88" y="1106" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" fill="#0f172a">Request / result rules</text>
+<path d="M86 1117 H1074" stroke="#94a3b8" stroke-opacity="0.28"/>
+<text x="88" y="1136" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">Only accept start in IDLE or DONE; ignore start while busy.</text>
+<text x="88" y="1159" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">Latch min(img_idx,19) on accept_start. Image and label stay associated.</text>
+<text x="88" y="1182" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">Top done stays high in DONE; FC-layer done is a one-cycle pulse.</text>
+<text x="88" y="1205" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">argmax_valid captures both pred_digit and correct on the DONE-entry edge.</text>
+<text x="88" y="1228" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">Counter clears on accepted start, counts busy cycles, then holds.</text>
+<rect x="1190" y="1080" width="910" height="220" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+<text x="1208" y="1106" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" fill="#0f172a">Argmax / debug / reset rules</text>
+<path d="M1206 1117 H2084" stroke="#94a3b8" stroke-opacity="0.28"/>
+<text x="1208" y="1136" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">argmax compares signed scores; ties choose the smallest index.</text>
+<text x="1208" y="1159" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">Clocked argmax returns digit + valid together; latency must be ≥1 cycle.</text>
+<text x="1208" y="1182" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">If scanning: initialize max from score 0; update only on strict &gt;.</text>
+<text x="1208" y="1205" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">score_debug[32×c +: 32] = acc2[c]; each score interpreted signed.</text>
+<text x="1208" y="1228" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">All state/data/control registers reset to 0 except FSM reset state = IDLE.</text>
+<text x="50" y="43" font-family="Segoe UI,Arial,sans-serif" font-size="30" fill="#0f172a" font-weight="700">Timing, mapping &amp; interface reference</text>
+<text x="50" y="82" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#475569" font-weight="400">Implementation contract for the corrected diagrams • review independently of old RTL</text>
+<text x="50" y="1412" font-family="Segoe UI,Arial,sans-serif" font-size="15" fill="#64748b" font-weight="400">MNIST / 196 → 64 → 10  •  REVIEW COPY  •  All sequential blocks: common clk [1], synchronous rst [1] (reset wires omitted).</text>
+<text x="1860" y="1412" font-family="Segoe UI,Arial,sans-serif" font-size="15" fill="#64748b" font-weight="400">08 · Timing &amp; mapping</text>
+</svg>

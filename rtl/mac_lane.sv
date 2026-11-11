@@ -1,20 +1,8 @@
-// rtl/mac_lane.sv
-//
-// Lab 3 skeleton. See docs/lab3_rtl_datapath.md before writing any logic here.
-//
-// One MAC lane: local weight memory (this lane's slice of a weight matrix,
-// FC1 region + FC2 region packed into one address space, see
-// docs/architecture_spec.md Section 3) + a DSP48E1-inferring multiply-
-// accumulate (docs/lab2_fpga_concepts.md's MACC coding pattern).
-//
-// weight_addr and act_data are SHARED/BROADCAST signals driven identically
-// to every mac_lane instance by fc_layer -- see docs/lab3_rtl_datapath.md's
-// "Background: how the batch/addressing scheme actually works" section for
-// why that's correct despite each lane computing a different neuron.
-
 module mac_lane #(
     parameter int    LOCAL_MEM_DEPTH   = 1088,  // TODO: confirm sizing against your FC1/FC2 region layout (architecture_spec.md Section 3)
-    parameter string WEIGHT_INIT_FILE  = ""     // TODO: this lane's per-lane init file -- see the "weight file init is an open decision" note in lab3
+    parameter string WEIGHT_INIT_FILE  = "",     // TODO: this lane's per-lane init file -- see the "weight file init is an open decision" note in lab3
+    parameter string BIAS_INIT_FILE = "",
+    parameter int BIAS_DEPTH = 4
 )(
     input  logic clk,
     input  logic rst,
@@ -25,59 +13,67 @@ module mac_lane #(
 
     // Accumulator control
     input  logic                acc_clear,   // 1 = synchronously load acc with bias_in instead of accumulating
-    input  logic signed [31:0]  bias_in,
+    input logic [((BIAS_DEPTH > 1) ? $clog2(BIAS_DEPTH) : 1)-1:0] bias_addr,
     input  logic                acc_en,      // 1 = perform one multiply-accumulate this cycle
 
     output logic signed [31:0]  acc_out
 );
 
-    // TODO: declare the local weight memory array and preload it with
-    // WEIGHT_INIT_FILE via $readmemh in an initial block. Register the read
-    // address (weight_addr) so Vivado infers a real BRAM primitive rather
-    // than fabric LUTs -- see docs/lab2_fpga_concepts.md's BRAM inference
-    // section. Remember: a registered-address read returns data ONE cycle
-    // later, not the same cycle -- fc_layer's FSM must be built assuming
-    // that latency (see lab3.md).
-
+    // weight ROM
     logic signed [7:0] weight_mem [0:LOCAL_MEM_DEPTH-1];
 
     initial begin
-        $readmemh(WEIGHT_INIT_FILE, weight_mem);
+        if (WEIGHT_INIT_FILE != "") $readmemh(WEIGHT_INIT_FILE, weight_mem);
     end
 
-    logic signed [7:0] weight_data;
-
+    logic [$clog2(LOCAL_MEM_DEPTH)-1:0] weight_addr_r;
     always_ff @(posedge clk) begin
         if (rst) begin
-            weight_data <= 0;
+            weight_addr_r <= 0;
         end else begin
-            weight_data <= weight_mem[weight_addr];
+            weight_addr_r <= weight_addr;
         end
     end
 
+    logic signed [7:0] weight_data;
+    always_ff @(posedge clk) begin // infers BRAM
+        if (rst) begin
+            weight_data <= 0;
+        end else begin
+            weight_data <= weight_mem[weight_addr_r];
+        end
+    end
 
-    // TODO: implement the DSP48E1 MACC-style accumulate:
-    //   - register weight_addr's resulting weight value and act_data (the
-    //     DSP48E1's registered A/B inputs)
-    //   - on acc_clear, load acc_out <= bias_in instead of accumulating
-    //   - on acc_en (and not acc_clear), acc_out <= acc_out + weight * act_data
-    //   - weight is signed (int8, from local memory); act_data must be
-    //     ZERO-extended to match the multiplier width, not sign-extended
-    //     (see the "non-negative operands" note in docs/lab3_rtl_datapath.md)
+    // Bias ROM -- LUT
+    logic signed [31:0] bias_mem [0:BIAS_DEPTH-1];
 
-    logic signed [8:0]  b_reg;      // registered activation (B input)
+    initial begin
+        if (BIAS_INIT_FILE != "") $readmemh(BIAS_INIT_FILE, bias_mem);
+    end
 
+    logic signed [31:0] bias_in;
+    assign bias_in = bias_mem[bias_addr]; // LUT bc combinational
+
+
+    logic signed [31:0] next_acc_out;
+    logic signed [8:0] act_data_r;
     always_ff @(posedge clk) begin
         if (rst) begin
             acc_out <= 0;
-            b_reg <= 0;
+            act_data_r <= 0;
         end else begin
-            b_reg <= act_data;
-            if (acc_clear) begin
-                acc_out <= bias_in;
-            end else if (acc_en) begin
-                acc_out <= acc_out + (weight_data * b_reg);
-            end
+            acc_out <= next_acc_out;
+            act_data_r <= act_data;
+        end
+    end
+
+    always_comb begin
+        if (acc_clear) begin
+            next_acc_out = bias_in;
+        end else if (acc_en) begin
+            next_acc_out = acc_out + (weight_data * act_data_r);
+        end else begin
+            next_acc_out = acc_out;
         end
     end
 

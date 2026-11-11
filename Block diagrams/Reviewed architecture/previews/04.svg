@@ -1,0 +1,176 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="1820" viewBox="0 0 2400 1820">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>
+<rect width="2400" height="1820" fill="#ffffff"/>
+<path d="M50 105 H2350" stroke="#cbd5e1" stroke-width="2"/>
+<polyline points="420,250 560,250" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="770,250 910,250" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="840,250 840,120 245,120 245,170" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="510,575 675,575" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="885,575 935,575 935,750 290,750 290,690" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="885,575 1090,575" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1440,550 1560,550" fill="none" stroke="#c2410c" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1440,620 1610,620" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="535,1005 690,1005" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="915,1005 980,1005 980,1200 305,1200 305,1125" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="915,1005 1080,1005" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="2010,605 2140,605 2140,785 1980,785 1980,860" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1490,965 1750,965" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1545,1035 1750,1035" fill="none" stroke="#c2410c" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1980,1145 1980,1240 1450,1240 1450,1345" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="1700,1480 1950,1480" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<polyline points="2280,1480 2340,1480 2340,1690 1450,1690 1450,1595" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<rect x="70" y="170" width="350" height="170" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+<text x="88" y="202" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Next-state logic</text>
+<path d="M86 216 H404" stroke="#c2410c" stroke-opacity="0.28"/>
+<text x="88" y="238" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">Transitions: page 05</text>
+<text x="88" y="261" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">Inputs: start, weights_done,</text>
+<text x="88" y="284" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">batches_done, state</text>
+<text x="88" y="307" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">Default: next_state = state</text>
+<rect x="560" y="190" width="210" height="125" rx="10" fill="#f3efff" stroke="#7c3aed" stroke-width="2"/>
+<text x="578" y="222" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">State FF</text>
+<path d="M576 236 H754" stroke="#7c3aed" stroke-opacity="0.28"/>
+<text x="578" y="258" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">state [3]</text>
+<text x="578" y="282" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">reset → IDLE</text>
+<path d="M560 288 l13 9 l-13 9" fill="none" stroke="#7c3aed" stroke-width="2"/>
+<rect x="910" y="160" width="395" height="190" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+<text x="928" y="192" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Moore output logic</text>
+<path d="M926 206 H1289" stroke="#c2410c" stroke-opacity="0.28"/>
+<text x="928" y="228" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">acc_clear, count_en, acc_en,</text>
+<text x="928" y="252" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">capture_valid, busy, done [1 each]</text>
+<text x="928" y="276" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Decoded from state only</text>
+<text x="928" y="300" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Full values on page 05</text>
+<rect x="1480" y="155" width="810" height="190" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+<text x="1498" y="181" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" fill="#0f172a">Signal names / parameters</text>
+<path d="M1496 192 H2274" stroke="#94a3b8" stroke-opacity="0.28"/>
+<text x="1498" y="211" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">q = weight_count; B = NUM_BATCHES; lane L is an elaboration index.</text>
+<text x="1498" y="234" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">QW=max(1, ceil(log2(N_IN+2))); BW=max(1, ceil(log2(B))).</text>
+<text x="1498" y="257" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">AW=max(1, ceil(log2(N_IN))); WW=max(1, ceil(log2(B×N_IN))).</text>
+<text x="1498" y="280" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">acc_clear loads bias; count_en advances q; acc_en permits a MAC.</text>
+<text x="1498" y="303" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">capture_valid is internal, one cycle per completed batch.</text>
+<rect x="70" y="475" width="440" height="215" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="88" y="507" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Weight count / next value</text>
+<path d="M86 521 H494" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="88" y="543" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">if acc_clear: next_q = 0</text>
+<text x="88" y="567" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">else if count_en AND q &lt; N_IN+1:</text>
+<text x="88" y="591" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">  next_q = q + 1</text>
+<text x="88" y="615" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">else: next_q = q</text>
+<text x="88" y="639" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">weights_done = (q == N_IN+1)</text>
+<rect x="675" y="505" width="210" height="140" rx="10" fill="#f3efff" stroke="#7c3aed" stroke-width="2"/>
+<text x="693" y="537" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Weight count FF</text>
+<path d="M691 551 H869" stroke="#7c3aed" stroke-opacity="0.28"/>
+<text x="693" y="573" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">q [QW]</text>
+<text x="693" y="597" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">reset = 0</text>
+<path d="M675 618 l13 9 l-13 9" fill="none" stroke="#7c3aed" stroke-width="2"/>
+<rect x="1090" y="500" width="350" height="160" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="1108" y="532" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Clamp input index</text>
+<path d="M1106 546 H1424" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="1108" y="568" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">i = min(q, N_IN−1)</text>
+<text x="1108" y="592" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">act_addr = i [AW]</text>
+<text x="1108" y="616" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Clamp before narrowing</text>
+<rect x="1610" y="530" width="400" height="155" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="1628" y="562" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Local weight address</text>
+<path d="M1626 576 H1994" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="1628" y="598" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">weight_addr = batch × N_IN + i</text>
+<text x="1628" y="622" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">All lanes receive the same address</text>
+<text x="1628" y="646" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Different lane ROM contents</text>
+<rect x="70" y="910" width="465" height="215" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="88" y="942" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Batch count / next value</text>
+<path d="M86 956 H519" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="88" y="978" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">if state == IDLE: next_batch = 0</text>
+<text x="88" y="1002" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">else if capture_valid AND batch &lt; B−1:</text>
+<text x="88" y="1026" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">  next_batch = batch + 1</text>
+<text x="88" y="1050" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">else: next_batch = batch</text>
+<text x="88" y="1074" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">batches_done = (batch == B−1)</text>
+<rect x="690" y="935" width="225" height="140" rx="10" fill="#f3efff" stroke="#7c3aed" stroke-width="2"/>
+<text x="708" y="967" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Batch FF</text>
+<path d="M706 981 H899" stroke="#7c3aed" stroke-opacity="0.28"/>
+<text x="708" y="1003" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">batch [BW]</text>
+<text x="708" y="1027" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">reset = 0</text>
+<path d="M690 1048 l13 9 l-13 9" fill="none" stroke="#7c3aed" stroke-width="2"/>
+<rect x="1080" y="885" width="410" height="205" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+<text x="1098" y="911" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" fill="#0f172a">Batch fanout / local lookup</text>
+<path d="M1096 922 H1474" stroke="#94a3b8" stroke-opacity="0.28"/>
+<text x="1098" y="941" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">bias_addr = batch [BW] → each lane</text>
+<text x="1098" y="964" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">batch [BW] → weight address logic</text>
+<text x="1098" y="987" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">batch [BW] → capture indexing</text>
+<text x="1098" y="1010" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">Hold the last batch; never address B.</text>
+<text x="1098" y="1033" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">Do not clear batch on acc_clear.</text>
+<rect x="1750" y="860" width="455" height="285" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="1768" y="892" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">MAC lane × LANES</text>
+<path d="M1766 906 H2189" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="1768" y="928" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">FC1: 16 × (784 × 8 weight ROM)</text>
+<text x="1768" y="952" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">FC2: 16 × (64 × 8 weight ROM)</text>
+<text x="1768" y="976" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Per-lane bias LUT: B × signed 32</text>
+<text x="1768" y="1000" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Contiguous neuron n = L × B + batch</text>
+<text x="1768" y="1024" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">acc_clear loads this batch’s bias</text>
+<text x="1768" y="1048" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Internal datapath: page 06</text>
+<path d="M1750 1118 l13 9 l-13 9" fill="none" stroke="#2563eb" stroke-width="2"/>
+<rect x="1120" y="1345" width="580" height="250" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="1138" y="1377" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Capture next-value logic</text>
+<path d="M1136 1391 H1684" stroke="#2563eb" stroke-opacity="0.28"/>
+<text x="1138" y="1413" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">Default: next_acc_out = acc_out  (entire array)</text>
+<text x="1138" y="1437" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">For each elaborated lane L = 0…LANES−1:</text>
+<text x="1138" y="1461" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">  n = L × B + batch</text>
+<text x="1138" y="1485" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">  if capture_valid AND n &lt; N_OUT:</text>
+<text x="1138" y="1509" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">    next_acc_out[n] = mac_lane_out[L]</text>
+<text x="1138" y="1533" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">One combinational owner for the next-value array</text>
+<rect x="1950" y="1390" width="330" height="165" rx="10" fill="#f3efff" stroke="#7c3aed" stroke-width="2"/>
+<text x="1968" y="1422" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Output bank FF</text>
+<path d="M1966 1436 H2264" stroke="#7c3aed" stroke-opacity="0.28"/>
+<text x="1968" y="1458" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">acc_out [0:N_OUT−1]</text>
+<text x="1968" y="1482" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">N_OUT × signed 32 bits</text>
+<text x="1968" y="1506" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#334155" xml:space="preserve">reset all elements = 0</text>
+<path d="M1950 1528 l13 9 l-13 9" fill="none" stroke="#7c3aed" stroke-width="2"/>
+<rect x="70" y="1335" width="885" height="245" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+<text x="88" y="1361" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" fill="#0f172a">Counter and completion interfaces</text>
+<path d="M86 1372 H939" stroke="#94a3b8" stroke-opacity="0.28"/>
+<text x="88" y="1391" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">weights_done [1] → next-state logic; batches_done [1] → next-state logic.</text>
+<text x="88" y="1414" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">busy [1], done [1] → FC-layer ports. acc_out array → top datapath.</text>
+<text x="88" y="1437" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">Counters update at the closing edge; capture uses the current batch.</text>
+<text x="88" y="1460" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">CLEAR resets q and loads the current bias. FILL_0/FILL_1 advance q.</text>
+<text x="88" y="1483" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">The final MAC commits at ACCUMULATE → CAPTURE.</text>
+<text x="88" y="1506" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#334155" xml:space="preserve">CAPTURE writes the stable sum one edge later, then advances batch.</text>
+<rect x="427.6" y="217" width="124.79999999999998" height="23" rx="4" fill="white"/>
+<text x="490" y="234" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">next_state [3]</text>
+<rect x="798.1" y="217" width="83.8" height="23" rx="4" fill="white"/>
+<text x="840" y="234" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">state [3]</text>
+<rect x="473.0" y="91" width="174.0" height="23" rx="4" fill="white"/>
+<text x="560" y="108" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">state [3] · feedback</text>
+<rect x="541.9" y="540" width="100.19999999999999" height="23" rx="4" fill="white"/>
+<text x="592" y="557" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">next_q [QW]</text>
+<rect x="565.3" y="717" width="149.39999999999998" height="23" rx="4" fill="white"/>
+<text x="640" y="734" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">q [QW] · feedback</text>
+<rect x="957.4" y="540" width="59.199999999999996" height="23" rx="4" fill="white"/>
+<text x="987" y="557" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">q [QW]</text>
+<rect x="1441.7" y="520" width="116.6" height="23" rx="4" fill="white"/>
+<text x="1500.0" y="537" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#c2410c">act_addr [AW]</text>
+<rect x="1495.4" y="586" width="59.199999999999996" height="23" rx="4" fill="white"/>
+<text x="1525" y="603" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">i [AW]</text>
+<rect x="545.5" y="969" width="133.0" height="23" rx="4" fill="white"/>
+<text x="612" y="986" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">next_batch [BW]</text>
+<rect x="548.9" y="1167" width="182.2" height="23" rx="4" fill="white"/>
+<text x="640" y="1184" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">batch [BW] · feedback</text>
+<rect x="951.0" y="969" width="92.0" height="23" rx="4" fill="white"/>
+<text x="997" y="986" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">batch [BW]</text>
+<rect x="1999.4" y="750" width="141.2" height="23" rx="4" fill="white"/>
+<text x="2070" y="767" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">weight_addr [WW]</text>
+<rect x="1552.6" y="931" width="124.79999999999998" height="23" rx="4" fill="white"/>
+<text x="1615" y="948" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">bias_addr [BW]</text>
+<rect x="1593.3" y="1005" width="108.39999999999999" height="23" rx="4" fill="white"/>
+<text x="1647.5" y="1022" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#c2410c">act_data [9]</text>
+<rect x="1598.4" y="1204" width="223.2" height="23" rx="4" fill="white"/>
+<text x="1710" y="1221" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">mac_lane_out [LANES × s32]</text>
+<rect x="1713.4" y="1442" width="223.2" height="23" rx="4" fill="white"/>
+<text x="1825" y="1459" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">next_acc_out [N_OUT × s32]</text>
+<rect x="1763.3" y="1657" width="313.4" height="23" rx="4" fill="white"/>
+<text x="1920" y="1674" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#475569">acc_out [N_OUT × s32] · hold feedback</text>
+<text x="50" y="43" font-family="Segoe UI,Arial,sans-serif" font-size="30" fill="#0f172a" font-weight="700">Parameterized FC layer</text>
+<text x="50" y="82" font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#475569" font-weight="400">Contiguous ownership: neuron = lane × B + batch  •  B = ceil(N_OUT / LANES)</text>
+<text x="50" y="1782" font-family="Segoe UI,Arial,sans-serif" font-size="15" fill="#64748b" font-weight="400">MNIST / 196 → 64 → 10  •  REVIEW COPY  •  All sequential blocks: common clk [1], synchronous rst [1] (reset wires omitted).</text>
+<text x="2060" y="1782" font-family="Segoe UI,Arial,sans-serif" font-size="15" fill="#64748b" font-weight="400">04 · FC layer</text>
+<text x="95" y="451" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#c2410c" font-weight="400">acc_clear [1], count_en [1] →</text>
+<text x="1630" y="510" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#c2410c" font-weight="400">batch [BW] →</text>
+<text x="93" y="887" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#c2410c" font-weight="400">state [3], capture_valid [1] →</text>
+<text x="1770" y="840" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#c2410c" font-weight="400">acc_clear [1], acc_en [1] →</text>
+<text x="1140" y="1322" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#c2410c" font-weight="400">capture_valid [1], batch [BW] →</text>
+</svg>
