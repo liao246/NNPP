@@ -20,12 +20,6 @@ module mac_lane #(
 );
 
     // weight ROM
-    logic signed [7:0] weight_mem [0:LOCAL_MEM_DEPTH-1];
-
-    initial begin
-        if (WEIGHT_INIT_FILE != "") $readmemh(WEIGHT_INIT_FILE, weight_mem);
-    end
-
     logic [$clog2(LOCAL_MEM_DEPTH)-1:0] weight_addr_r;
     always_ff @(posedge clk) begin
         if (rst) begin
@@ -36,23 +30,30 @@ module mac_lane #(
     end
 
     logic signed [7:0] weight_data;
-    always_ff @(posedge clk) begin // infers BRAM
-        if (rst) begin
-            weight_data <= 0;
-        end else begin
-            weight_data <= weight_mem[weight_addr_r];
-        end
-    end
+    rom #(
+        .DATA_W(8),
+        .DEPTH(LOCAL_MEM_DEPTH),
+        .INIT_FILE(WEIGHT_INIT_FILE)
+    ) weight_rom (
+        .clk(clk),
+        .rst(rst),
+        .addr(weight_addr_r),
+        .data_out(weight_data)
+    );
 
     // Bias ROM -- LUT
-    logic signed [31:0] bias_mem [0:BIAS_DEPTH-1];
-
-    initial begin
-        if (BIAS_INIT_FILE != "") $readmemh(BIAS_INIT_FILE, bias_mem);
-    end
-
     logic signed [31:0] bias_in;
-    assign bias_in = bias_mem[bias_addr]; // LUT bc combinational
+    rom #(
+        .DATA_W(32),
+        .DEPTH(BIAS_DEPTH),
+        .INIT_FILE(BIAS_INIT_FILE),
+        .REGISTER_OUTPUT(1'b0)
+    ) bias_rom (
+        .clk(clk),
+        .rst(rst),
+        .addr(bias_addr),
+        .data_out(bias_in)
+    );
 
 
     logic signed [31:0] next_acc_out;

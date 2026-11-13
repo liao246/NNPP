@@ -28,62 +28,319 @@ module digit_top #(
     output logic busy,
     output logic done,
     output logic [3:0] pred_digit,
-    output logic       correct,
-    output logic [15:0] cycle_count,
-
-    // Simulation/ILA-only debug port -- does not need to reach a real board I/O pin
-    output logic signed [N_CLASS*32-1:0] score_debug
+    output logic       correct
 );
 
-    // TODO: top-level FSM: IDLE -> FC1 -> REQUANT -> FC2 -> ARGMAX -> DONE_S -> IDLE
-    // (same shape as the old project's FSM, but now FC1/FC2 are the
-    // parallel fc_layer engine, not a serial one-MAC-per-cycle loop, and
-    // REQUANT is a real state now instead of being skipped entirely).
+    // State and signal declarations
 
-    // TODO: image ROM (NTEST x N_IN, uint8, from IMAGE_INIT_FILE) -- feed
-    // fc_layer #1's act_addr/act_data pull interface, offset by img_idx*N_IN.
+    typedef enum logic [3:0] {
+        IDLE,
+        FC1_START,
+        FC1_WAIT,
+        REQUANT_CAPTURE,
+        FC2_START,
+        FC2_WAIT,
+        ARGMAX_START,
+        ARGMAX_WAIT,
+        DONE
+    } state_t;
 
-    // TODO: label ROM (NTEST x 4-bit, from LABEL_INIT_FILE) -- compare
-    // against pred_digit to drive `correct`.
+    // FSM control signals
+    state_t state, next_state;
+    logic fc1_start, fc1_done, fc2_start, fc2_done, requant_en, argmax_en;
 
-    // TODO: fc_layer #1 instance, parameterized N_IN=N_IN, N_OUT=HIDDEN, LANES=LANES.
-    //   (fc_layer #1 example instantiation -- fill in the weight/bias file
-    //   parameters and wire up start/busy/done/act_addr/act_data per its port list)
-    //
-    // fc_layer #(
-    //     .N_IN  (N_IN),
-    //     .N_OUT (HIDDEN),
-    //     .LANES (LANES)
-    //     // TODO: weight/bias init file parameters
-    // ) fc1 (
-    //     .clk      (clk),
-    //     .rst      (rst),
-    //     .start    (/* TODO: from top FSM */),
-    //     .act_addr (/* TODO */),
-    //     .act_data (/* TODO: from image ROM */),
-    //     .busy     (/* TODO */),
-    //     .done     (/* TODO */),
-    //     .acc_out  (/* TODO: 64 raw int32 FC1 accumulators */)
-    // );
+    // fc_layer signals
+    logic [$clog2(N_IN)-1:0] act_addr1;
+    logic [$clog2(HIDDEN)-1:0] act_addr2;
+    logic [8:0] act_data, act_data_delay, act_data_delay_r;
+    logic [7:0] image_data;
+    logic fc1_busy, fc2_busy;
+    logic signed [31:0] acc_out [0:HIDDEN-1], acc_out2 [0:N_CLASS-1];
 
-    // TODO: requant_relu bank -- decide how many instances (see lab3.md's
-    // "requant-bank parallelism" decision), feed each fc1's raw acc_out
-    // values, capture the resulting 64 int8 a1 values into a register bank
-    // that fc_layer #2 will pull from as its activation source.
+    // requant_relu signals
+    logic signed [7:0] requant_out [0:HIDDEN-1];
+    logic [HIDDEN*8-1:0] requant_r, next_requant_r;
 
-    // TODO: fc_layer #2 instance, parameterized N_IN=HIDDEN, N_OUT=N_CLASS,
-    // LANES=LANES, act_data sourced from the a1 register bank above instead
-    // of the image ROM.
+    logic [$clog2(N_IN*NTEST)-1:0] image_addr;
+    logic [$clog2(NTEST)-1:0] img_idx_r, next_img_idx;
 
-    // TODO: argmax10 instance, fed fc_layer #2's raw acc_out (NOT
-    // requantized, per architecture_spec.md Section 2) -> pred_digit.
+    logic [3:0] predicted_digit;
+    logic [3:0] next_pred_digit;
+    logic argmax_valid_out;
+    logic next_correct;
+    logic [3:0] label_rom_out;
+    logic correct_r;
 
-    // TODO: cycle_count -- free-running counter that starts at `start` and
-    // latches its value at `done` (see architecture_spec.md Section 4's
-    // "practical demo note" -- 9us is too fast to see, this counter is the
-    // actual demo/debug readout).
+    // Choose the next FSM state.
+    always_comb begin
+        case (state)
+            IDLE: begin
+                if (start) next_state = FC1_START;
+                else next_state = IDLE;
+            end
+            FC1_START: begin
+                next_state = FC1_WAIT;
+            end
+            FC1_WAIT: begin
+                if (fc1_done) next_state = REQUANT_CAPTURE;
+                else next_state = FC1_WAIT;
+            end
+            REQUANT_CAPTURE: begin
+                next_state = FC2_START;
+            end
+            FC2_START: begin
+                next_state = FC2_WAIT;
+            end
+            FC2_WAIT: begin
+                if (fc2_done) next_state = ARGMAX_START;
+                else next_state = FC2_WAIT;
+            end
+            ARGMAX_START: begin
+                next_state = ARGMAX_WAIT;
+            end
+            ARGMAX_WAIT: begin
+                if (argmax_valid_out) next_state = DONE;
+                else next_state = ARGMAX_WAIT;
+            end
+            DONE: begin
+                if (start) next_state = FC1_START;
+                else next_state = DONE;  // hold done until the next request
+            end
+            default: next_state = IDLE;
+        endcase
+    end
 
-    // TODO: score_debug -- pack fc_layer #2's raw acc_out into this flat bus
-    // for simulation/ILA visibility.
+    // Store the current FSM state.
+    always_ff @(posedge clk) begin
+        if (rst) begin
+            state <= IDLE;
+        end else begin
+            state <= next_state;
+        end
+    end
+
+    // Generate control signals from the current state.
+    always_comb begin
+        busy = 0;
+        done = 0;
+        fc1_start = 0;
+        fc2_start = 0;
+        requant_en = 0;
+        argmax_en = 0;
+
+        case (state)
+            IDLE: begin
+                busy = 0;
+                done = 0;
+            end
+            FC1_START: begin
+                busy = 1;
+                fc1_start = 1;
+            end
+            FC1_WAIT: begin
+                busy = 1;
+            end
+            REQUANT_CAPTURE: begin
+                busy = 1;
+                requant_en = 1;
+            end
+            FC2_START: begin
+                busy = 1;
+                fc2_start = 1;
+            end
+            FC2_WAIT: begin
+                busy = 1;
+            end
+            ARGMAX_START: begin
+                busy = 1;
+                argmax_en = 1;
+            end
+            ARGMAX_WAIT: begin
+                busy = 1;
+            end
+            DONE: begin
+                busy = 0;
+                done = 1;
+            end
+            default: begin
+                busy = 0;
+                done = 0;
+            end
+        endcase
+    end
+
+    // Image selection and image ROM
+    always_comb begin
+        next_img_idx = img_idx_r;
+        if (fc1_start) begin
+            // With 20 images, indices above 19 select the last image.
+            if (img_idx > NTEST-1) begin
+                next_img_idx = NTEST-1;
+            end else begin
+                next_img_idx = img_idx;
+            end
+        end
+    end
+
+    always_ff @(posedge clk) begin
+        if (rst) begin
+            img_idx_r <= '0;
+        end else begin
+            img_idx_r <= next_img_idx;
+        end
+    end
+
+    assign image_addr = img_idx_r * N_IN + act_addr1;
+    assign act_data = {1'b0, image_data};
+
+    rom #(
+        .DATA_W(8),
+        .DEPTH(N_IN * NTEST),
+        .INIT_FILE(IMAGE_INIT_FILE)
+    ) image_rom (
+        .clk(clk),
+        .rst(rst),
+        .addr(image_addr),
+        .data_out(image_data)
+    );
+
+    // FC1: image pixels to hidden-layer accumulators
+    fc_layer #(
+        .N_IN(N_IN),
+        .N_OUT(HIDDEN),
+        .LANES(LANES),
+        .FILE_PREFIX("fc1")
+    ) fc_layer1 (
+        .clk(clk),
+        .rst(rst),
+        .start(fc1_start),
+        .act_addr(act_addr1),
+        .act_data(act_data),
+        .busy(fc1_busy),
+        .done(fc1_done),
+        .acc_out(acc_out)
+    );
+
+    // Requantization: convert and store the hidden-layer activations
+    genvar i;
+
+    generate
+        for (i = 0; i < HIDDEN; i++) begin : requant_relu_gen
+            requant_relu #(
+                .SHIFT1(11)
+            ) requant_relu_inst (
+                .acc_out(acc_out[i]),
+                .requant_out(requant_out[i])
+            );
+        end
+    endgenerate
+
+    // The requant bank is combinational; capture all activations once.
+    always_comb begin
+        next_requant_r = requant_r;
+        if (requant_en) begin
+            for (int i = 0; i < HIDDEN; i++) begin
+                next_requant_r[i*8 +: 8] = requant_out[i];
+            end
+        end
+    end
+
+    always_ff @(posedge clk) begin
+        if (rst) begin
+            requant_r <= '0;
+        end else begin
+            requant_r <= next_requant_r;
+        end
+    end
+
+    // FC2 input mux: select one byte, then delay it by one clock.
+    // [act_addr2*8 +: 8] selects the eight bits for activation act_addr2.
+    assign act_data_delay = {1'b0, requant_r[act_addr2*8 +: 8]};
+
+    always_ff @(posedge clk) begin
+        if (rst) begin
+            act_data_delay_r <= 9'b0;
+        end else begin
+            act_data_delay_r <= act_data_delay;
+        end
+    end
+
+    // FC2: hidden-layer activations to ten class scores
+    fc_layer #(
+        .N_IN(HIDDEN),
+        .N_OUT(N_CLASS),
+        .LANES(LANES),
+        .FILE_PREFIX("fc2")
+    ) fc_layer2 (
+        .clk(clk),
+        .rst(rst),
+        .start(fc2_start),
+        .act_addr(act_addr2),
+        .act_data(act_data_delay_r),
+        .busy(fc2_busy),
+        .done(fc2_done),
+        .acc_out(acc_out2)
+    );
+
+    // Argmax: select the class with the highest score
+    argmax10 argmax_inst (
+        .clk(clk),
+        .rst(rst),
+        .en(argmax_en),
+        .scores_in(acc_out2),
+        .pred_digit(predicted_digit),
+        .valid_out(argmax_valid_out)
+    );
+
+    // Label ROM and comparison against the predicted class
+    rom #(
+        .DATA_W(4),
+        .DEPTH(NTEST),
+        .INIT_FILE(LABEL_INIT_FILE)
+    ) label_rom (
+        .clk(clk),
+        .rst(rst),
+        .addr(img_idx_r),
+        .data_out(label_rom_out)
+    );
+
+    always_comb begin
+        if (predicted_digit == label_rom_out) begin
+            correct_r = 1'b1;
+        end else begin
+            correct_r = 1'b0;
+        end
+    end
+
+    // Output registers: update both results when argmax finishes.
+    always_comb begin
+        next_pred_digit = pred_digit;  // Hold the previous result.
+        if (argmax_valid_out) begin
+            next_pred_digit = predicted_digit;
+        end
+    end
+
+    always_ff @(posedge clk) begin
+        if (rst) begin
+            pred_digit <= 4'b0;
+        end else begin
+            pred_digit <= next_pred_digit;
+        end
+    end
+
+    always_comb begin
+        next_correct = correct;  // Hold the previous result.
+        if (argmax_valid_out) begin
+            next_correct = correct_r;
+        end
+    end
+
+    always_ff @(posedge clk) begin
+        if (rst) begin
+            correct <= 1'b0;
+        end else begin
+            correct <= next_correct;
+        end
+    end
 
 endmodule

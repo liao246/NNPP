@@ -30,8 +30,6 @@ module tb_digit_top;
     logic done;
     logic [3:0] pred_digit;
     logic correct;
-    logic [15:0] cycle_count;
-    logic signed [N_CLASS*32-1:0] score_debug;
 
     digit_top #(
         .N_IN    (N_IN),
@@ -48,9 +46,7 @@ module tb_digit_top;
         .busy        (busy),
         .done        (done),
         .pred_digit  (pred_digit),
-        .correct     (correct),
-        .cycle_count (cycle_count),
-        .score_debug (score_debug)
+        .correct     (correct)
     );
 
     // -----------------------------------------------------------------
@@ -173,11 +169,9 @@ module tb_digit_top;
 
             // TODO: compare against ref_acc1[img], ref_a1[img],
             // ref_acc2[img], ref_pred[img]. You'll need a way to observe
-            // acc1/a1 from the testbench -- either expose them as
-            // additional digit_top debug ports (simplest) or reference
-            // dut's internals hierarchically (dut.<instance>.<signal>).
-            // Document which you chose. score_debug already exposes acc2
-            // per architecture_spec.md Section 5.
+            // internal values from the testbench:
+            // dut.acc_out[i] for FC1, dut.requant_r[i*8 +: 8] for
+            // stored activations, and dut.acc_out2[i] for FC2 scores.
             //
             // On any mismatch: increment errors, and $display enough detail
             // (image index, which value, expected vs. actual) to debug
